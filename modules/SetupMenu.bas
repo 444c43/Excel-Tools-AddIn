@@ -23,7 +23,7 @@ Private Sub CreateReviewSubMenu()
     Call NewMenu.AddSubMenu("Review", _
         Array("Setup Review", "Run Review", "Version 8.0"), _
         Array(5593, 3524, 3998), _
-        Array("Review.SetupReviewSheets", "Review.Run", ""))
+        Array("RunReview.SetupSheets", "RunReview.EntryPoint", ""))
 End Sub
 Private Sub CreateSnapshotSubMenu()
     Call NewMenu.AddSubMenu("Snapshot", _
@@ -35,7 +35,8 @@ Private Sub CreateLblPrintSubMenu()
     Call NewMenu.AddSubMenu("AS400 Labels", _
         Array("3RDPARTY", "SF BUILD", "HARRYO2Z", "SF UPDATE", "STAND1X3", "ONELINE"), _
         Array(509, 509, 509, 509, 509, 509), _
-        Array("", "", "", "", "", ""))
+        Array("AS400Labels.THIRDPARTY", "AS400Labels.SFBUILD", "AS400Labels.HARRYO2Z", _
+            "AS400Labels.SFUPDATE", "AS400Labels.STAND1X3", "AS400Labels.ONELINE"))
 End Sub
 Private Sub CreateUniqueToolsSubMenu()
     Call NewMenu.AddSubMenu("Unique Tools", _
