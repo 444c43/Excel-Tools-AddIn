@@ -2,6 +2,7 @@ Attribute VB_Name = "RunReview"
 Option Explicit
 Public ReviewValidations As New Validations
 Public UserMessage As New Message
+Public ReviewCustomer As Customer
 
 Sub SetupSheets()
     Dim ReviewSheets As SheetSetups
@@ -20,8 +21,8 @@ End Sub
 
 Sub EntryPoint()
     Call Constructor
-    Call ReviewValidations.SetupObject
-
+    Call InitializeObjects
+    
     If CountErrors = 0 Then
         Call Destructors
         Call ExecuteProgramReview
@@ -32,18 +33,24 @@ End Sub
 Private Sub Constructor()
     Set ReviewValidations = New Validations
     Set UserMessage = New Message
+    Set ReviewCustomer = New Customer
+End Sub
+Private Sub InitializeObjects()
+    Call ReviewValidations.SetupObject("LIST80", "GFCCS1")
+    Call ReviewCustomer.SetupCustomerData("GFCCS1")
 End Sub
 Private Function CountErrors%()
     Call ReviewValidations.ValidateSheetNames(Array("Serial File", "Review Data", "Price List"))
     Call ReviewValidations.ValidateHeaders(Array("GFCSR#", "SERIAL", "CONO80"))
-    Call ReviewValidations.ValidateCustomerData
+    Call ReviewValidations.ValidateCustomerData(ReviewCustomer.AcctNumber, ReviewCustomer.PriceCode)
     CountErrors = ReviewValidations.ValidationErrors.count
 End Function
 
 Private Sub Destructors()
     Set ReviewValidations = Nothing
+    Set UserMessage = Nothing
 End Sub
 Private Sub ExecuteProgramReview()
-    Debug.Print "Success"
+    'EXECUTE PROGRAM HERE ALL VALIDATIONS PASS
 End Sub
 
