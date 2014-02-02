@@ -1,3 +1,4 @@
 # Ignore Excel test files
-*
-.xls
+*archive
+*test
+*.xls
