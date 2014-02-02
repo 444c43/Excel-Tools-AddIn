@@ -90,20 +90,20 @@ End Property
 Public Property Get ReviewPeriod() As String
     ReviewPeriod = review_period
 End Property
-Public Property Let ReviewPeriod(Value As String)
-    review_period = Value
+Public Property Let ReviewPeriod(value As String)
+    review_period = value
 End Property
 
 Public Property Get ReviewWeeks() As Double
     ReviewWeeks = review_weeks
 End Property
-Public Property Let ReviewWeeks(Value As Double)
-    review_weeks = Value
+Public Property Let ReviewWeeks(value As Double)
+    review_weeks = value
 End Property
 
 Public Property Get Formula() As String
     Formula = acct_formula
 End Property
-Public Property Let Formula(Value As String)
-    acct_formula = Value
+Public Property Let Formula(value As String)
+    acct_formula = value
 End Property

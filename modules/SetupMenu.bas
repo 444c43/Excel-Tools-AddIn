@@ -42,7 +42,7 @@ Private Sub CreateUniqueToolsSubMenu()
     Call NewMenu.AddSubMenu("Unique Tools", _
         Array("Rename AS400 Headers", "Hide/Unhide Columns", "Unique Items In Column", "Pane Freeze/Unfreeze @ A2"), _
         Array(1549, 9, 4153, 1742), _
-        Array("", "", "", ""))
+        Array("", "", "MenuActions.CountUniqueItems", ""))
 End Sub
 Private Sub CreateBarCoderSubMenu()
     Call NewMenu.AddSubMenu("Bar Coder", _
