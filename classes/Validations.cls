@@ -40,7 +40,7 @@ Private Function WorkbookHasSheet(sheet_name$) As Boolean
     Dim sht As Worksheet
     WorkbookHasSheet = False
     For Each sht In ActiveWorkbook.Sheets
-        If sht.Name = sheet_name Then
+        If sht.name = sheet_name Then
             WorkbookHasSheet = True
             Exit Function
         End If

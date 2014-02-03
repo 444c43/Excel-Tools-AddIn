@@ -62,8 +62,8 @@ Private Sub Destructor()
 End Sub
 
 'PRIVATELY SET PROPERTIES
-Public Property Get Name() As String
-    Name = acct_name
+Public Property Get name() As String
+    name = acct_name
 End Property
 
 Public Property Get AcctNumber() As String

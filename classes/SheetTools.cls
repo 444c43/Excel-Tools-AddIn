@@ -16,7 +16,7 @@ Function CountUnique&(column_letter$)
     LastRow = ActiveCell.SpecialCells(xlLastCell).Row
     
     For x = 2 To LastRow
-        If IterateCountIf(column_letter, x, Sheets(activesheet.Name)) = 1 Then
+        If IterateCountIf(column_letter, x, Sheets(activesheet.name)) = 1 Then
             CountUnique = CountUnique + 1
         End If
     Next x

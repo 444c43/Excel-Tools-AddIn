@@ -23,7 +23,7 @@ Private Sub CreateSheets(new_names, sheetcount%)
     Dim i%
     For i = 0 To sheetcount
         Sheets.Add After:=Sheets(ActiveWorkbook.Sheets.count)
-        activesheet.Name = new_names(i)
+        activesheet.name = new_names(i)
     Next i
 End Sub
 
@@ -31,8 +31,8 @@ Private Sub DeleteSheets(new_names)
     Dim current_sheet As Worksheet
     
     For Each current_sheet In ActiveWorkbook.Sheets
-        If DoesSheetExist(current_sheet.Name, new_names) = False Then
-            Sheets(current_sheet.Name).Delete
+        If DoesSheetExist(current_sheet.name, new_names) = False Then
+            Sheets(current_sheet.name).Delete
         End If
     Next current_sheet
 End Sub

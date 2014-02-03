@@ -31,7 +31,7 @@ Private Sub UserForm_Initialize()
     multiReview.value = 0
 End Sub
 Private Sub SetInitialCustomerData()
-    lblAcctName2.Caption = ReviewCustomer.Name
+    lblAcctName2.Caption = ReviewCustomer.name
     lblAcctNumber2.Caption = ReviewCustomer.AcctNumber
     lblAcctType2.Caption = ReviewCustomer.AcctType
 End Sub

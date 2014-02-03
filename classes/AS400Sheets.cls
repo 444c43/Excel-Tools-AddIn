@@ -19,16 +19,16 @@ Public Sub SetupAS400Sheets(sheet_names, sheet_headers)
     Call FormatSheet.ResizeAllCells
 End Sub
 
-Private Sub AddHeaderValues(headers)
+Private Sub AddHeaderValues(Headers)
     Dim x As Byte
-    For x = 0 To UBound(headers)
-        Range(Cells(1, x + 1), Cells(1, x + 1)).value = headers(x)
+    For x = 0 To UBound(Headers)
+        Range(Cells(1, x + 1), Cells(1, x + 1)).value = Headers(x)
     Next x
 End Sub
 
-Private Sub FormatHeaders(headers)
+Private Sub FormatHeaders(Headers)
     Range("A2").Formula = "=SUM(65535-COUNTBLANK(B:B))+1"
     Range("A1:A2").Font.Bold = True
     Range("A1:A2").Font.ColorIndex = 3
-    Range(Cells(1, 2), Cells(1, UBound(headers) + 1)).Font.Bold = True
+    Range(Cells(1, 2), Cells(1, UBound(Headers) + 1)).Font.Bold = True
 End Sub
