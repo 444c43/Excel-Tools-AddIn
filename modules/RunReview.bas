@@ -45,12 +45,13 @@ Private Function CountErrors%()
     Call ReviewValidations.ValidateCustomerData(ReviewCustomer.AcctNumber, ReviewCustomer.PriceCode)
     CountErrors = ReviewValidations.ValidationErrors.count
 End Function
-
 Private Sub Destructors()
     Set ReviewValidations = Nothing
     Set UserMessage = Nothing
 End Sub
+
 Private Sub ExecuteProgramReview()
+    frmReview.Show
     'EXECUTE PROGRAM HERE ALL VALIDATIONS PASS
 End Sub
 
