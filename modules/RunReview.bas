@@ -57,6 +57,7 @@ Private Sub ExecuteProgramReview()
     Call AdjustAllSheetHeaders
     Call InactiveSerialsTab
     Call PartsNotOrderedTab
+    Call MissingPcPriceTab
 End Sub
 
 'ALL SUBS AND FUNCTIONS BELOW ARE CALLED FROM ExecuteProgramReview
@@ -68,12 +69,14 @@ Private Sub AdjustAllSheetHeaders()
     Call Headers.Convert("Review Data")
     Call Headers.Convert("Price List")
 End Sub
+
 Private Sub InactiveSerialsTab()
     Dim InactiveTab As InactiveSerials
     Set InactiveTab = New InactiveSerials
     
     Sheets.Add After:=Sheets("Price List")
     activesheet.name = "Inactive Serials"
+    
     Call InactiveTab.CutDeletedCopyInactive
 End Sub
 
@@ -83,8 +86,19 @@ Private Sub PartsNotOrderedTab()
     
     Sheets.Add After:=Sheets("Inactive Serials")
     activesheet.name = "Parts Not Ordered"
-    Call UnorderedParts.AddHeaders
-    Call UnorderedParts.FindNotOrderedParts
-    Call UnorderedParts.AddGFCPartNumbers
+    
+    UnorderedParts.SetupNotOrdered
 End Sub
+
+Private Sub MissingPcPriceTab()
+    Dim MissingPcPrice As MissingPrice
+    Set MissingPcPrice = New MissingPrice
+    
+    Sheets.Add After:=Sheets("Parts Not Ordered")
+    activesheet.name = "Missing Pc Price"
+    
+    MissingPcPrice.SetupMissingPcPrice
+End Sub
+
+
 
