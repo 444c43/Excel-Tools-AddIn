@@ -20,6 +20,7 @@ DisplayError:
 End Sub
 
 Sub EntryPoint()
+    Application.ScreenUpdating = False
     Call Constructor
     Call InitializeObjects
     
@@ -29,6 +30,7 @@ Sub EntryPoint()
     Else
         Call UserMessage.DisplayErrors(ReviewValidations.ValidationErrors)
     End If
+    Application.ScreenUpdating = True
 End Sub
 Private Sub Constructor()
     Set ReviewValidations = New Validations
@@ -58,6 +60,10 @@ Private Sub ExecuteProgramReview()
     Call InactiveSerialsTab
     Call PartsNotOrderedTab
     Call MissingPcPriceTab
+    Call AddReviewColumns
+    Call CalculateSerialStatus
+    Call RemoveSheets
+    Call FormatSheets
 End Sub
 
 'ALL SUBS AND FUNCTIONS BELOW ARE CALLED FROM ExecuteProgramReview
@@ -100,5 +106,30 @@ Private Sub MissingPcPriceTab()
     MissingPcPrice.SetupMissingPcPrice
 End Sub
 
+Private Sub AddReviewColumns()
+    Dim NewColumns As ReviewColumns
+    Set NewColumns = New ReviewColumns
+    
+    Call NewColumns.CreateReviewColumns(ReviewCustomer.ReviewWeeks, ReviewCustomer.Formula)
+End Sub
 
+Private Sub CalculateSerialStatus()
+    Dim SerialStatus As SerialCalculations
+    Set SerialStatus = New SerialCalculations
+   
+    SerialStatus.CalculateSerials
+End Sub
 
+Private Sub RemoveSheets()
+    Application.DisplayAlerts = False
+    Sheets("Price List").Delete
+    Sheets("Review Data").Delete
+    Application.DisplayAlerts = True
+End Sub
+
+Private Sub FormatSheets()
+    Dim WorksheetFormat As WorksheetFormatting
+    Set WorksheetFormat = New WorksheetFormatting
+    
+    Call WorksheetFormat.FormatAllWorksheets(ReviewCustomer.name, ReviewCustomer.AcctNumber, ReviewCustomer.ReviewPeriod)
+End Sub
