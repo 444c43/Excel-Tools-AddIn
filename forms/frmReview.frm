@@ -126,16 +126,18 @@ Private Sub SetPeriodAndWeeks(period$, weeks#)
     ReviewCustomer.ReviewWeeks = weeks
 End Sub
 Private Sub EvaluateAcctType()
+    Dim root_formula$
     Select Case ReviewCustomer.AcctType
         Case "1 Wk"
-            ReviewCustomer.Formula = "=IF(ROUNDUP(SUM((RC[-2]/" & ReviewCustomer.ReviewWeeks & ")/RC[-4]),0)=1,2,ROUNDUP(SUM((RC[-2]/" & ReviewCustomer.ReviewWeeks & ")/RC[-4]),0))"
+            root_formula = "ROUNDUP(SUM((G2/" & ReviewCustomer.ReviewWeeks & ")/E2),0)"
         Case "2 Wk"
-            ReviewCustomer.Formula = "=IF(ROUNDUP(SUM(((RC[-2]/" & ReviewCustomer.ReviewWeeks & ")/RC[-4])*2),0)=1,2,ROUNDUP(SUM(((RC[-2]/" & ReviewCustomer.ReviewWeeks & ")/RC[-4])*2),0))"
+            root_formula = "ROUNDUP(SUM(((G2/" & ReviewCustomer.ReviewWeeks & ")/E2)*2,0)"
         Case "3 Wk"
-            ReviewCustomer.Formula = "=IF(ROUNDUP(SUM(((RC[-2]/" & ReviewCustomer.ReviewWeeks & ")/RC[-4])*3),0)=1,2,ROUNDUP(SUM(((RC[-2]/" & ReviewCustomer.ReviewWeeks & ")/RC[-4])*3),0))"
+            root_formula = "ROUNDUP(SUM(((G2/" & ReviewCustomer.ReviewWeeks & ")/E2)*3,0)"
         Case "5 Day"
-            ReviewCustomer.Formula = "=IF(ROUNDUP(SUM(((RC[-2]/" & ReviewCustomer.ReviewWeeks & ")/RC[-4])/5),0)=1,2,ROUNDUP(SUM(((RC[-2]/" & ReviewCustomer.ReviewWeeks & ")/RC[-4])/5),0))"
+            root_formula = "ROUNDUP(SUM(((G2/" & ReviewCustomer.ReviewWeeks & ")/E2)/5,0)"
     End Select
+    ReviewCustomer.Formula = "=IF(" & root_formula & "=1,2,IF(AND(G2=0,H2>2),2," & root_formula & "))"
 End Sub
 
 Private Function CalculateMonths%()
