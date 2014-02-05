@@ -24,7 +24,7 @@ Public Sub CreateReviewColumns(review_weeks#, review_formula$)
     Call FormatFirstRow
     Call TextToColumns
     Call AddNumberFormat(last_row)
-    Call AddAvgScans(last_row)
+    Call AddAvgScans(last_row, review_weeks)
 End Sub
 Private Sub RemoveColumnErrors(last_row&)
     Call RemoveNumberAsTextError("C2:C" & last_row)
@@ -76,8 +76,8 @@ Private Sub AddFormulas(review_weeks#, review_formula$)
     With Sheets("Serial File")
         .Range("F2").FormulaR1C1 = "=ROUNDUP((RC[1]/" & review_weeks & "),0)"
         .Range("G2").FormulaR1C1 = "=IF(ISERROR(VLOOKUP(RC[-6],'Review Data'!R2C1:R" & Sheets("Review Data").Range("A36000").End(xlUp).Row & "C24,24,False))=TRUE,0,VLOOKUP(RC[-6],'Review Data'!R2C1:R" & Sheets("Review Data").Range("A36000").End(xlUp).Row & "C24,24,False))"
-        .Range("I2").FormulaR1C1 = review_formula
-        .Range("J2").FormulaR1C1 = "=IF(RC[-3]=0,0,SUM(RC[-1]-RC[-2]))"
+        .Range("I2").Formula = review_formula
+        .Range("J2").FormulaR1C1 = "=SUM(RC[-1]-RC[-2])"
         .Range("R2").FormulaR1C1 = "=VLOOKUP(RC[-14],'Price List'!R2C3:R" & Sheets("Price List").Range("A36000").End(xlUp).Row & "C6,4,False)"
         .Range("S2").FormulaR1C1 = "=SUM((RC[-1]*RC[-14])*RC[-11])"
         .Range("T2").FormulaR1C1 = "=SUM((RC[-2]*RC[-15])*RC[-10])"
@@ -151,12 +151,12 @@ Private Sub AddNumberFormat(last_row&)
     End With
 End Sub
 
-Private Sub AddAvgScans(last_row&)
+Private Sub AddAvgScans(last_row&, review_weeks#)
     With Sheets("Serial File")
         .Columns("I:I").Insert Shift:=xlToRight
-        .Range("I1").value = "Avg Scans"
+        .Range("I1").value = "Avg Wkly Bin Scans"
         .Columns.NumberFormat = "General"
-        .Range("I2").FormulaR1C1 = "=ROUNDUP(SUM(RC[-2]/RC[-4]),0)"
+        .Range("I2").FormulaR1C1 = "=ROUNDUP(SUM((RC[-2]/RC[-4])/" & review_weeks & "),0)"
         .Range("I2:I" & last_row).FillDown
     End With
 End Sub

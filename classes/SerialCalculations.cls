@@ -38,6 +38,11 @@ Sub CalculateSerials()
     Next i
 End Sub
 
+Sub MoveSerialStatus()
+    Sheets("Serial File").Columns("W:W").Cut
+    Sheets("Serial File").Columns("A:A").Insert Shift:=xlToRight
+End Sub
+
 'Private Sub SetSearchHeader(header_text$)
 '    LastColumn = Sheets("Serial File").Range("IV1").End(xlToLeft).Column
 '    Sheets("Serial File").Select

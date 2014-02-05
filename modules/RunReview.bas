@@ -56,7 +56,9 @@ End Sub
 Private Sub ExecuteProgramReview()
     frmReview.Show
     'EXECUTE PROGRAM HERE ALL VALIDATIONS PASS
+    Call RemoveZeroShipAndZeroBinQty
     Call AdjustAllSheetHeaders
+    Call NotScannedSerialsTab
     Call InactiveSerialsTab
     Call PartsNotOrderedTab
     Call MissingPcPriceTab
@@ -64,6 +66,18 @@ Private Sub ExecuteProgramReview()
     Call CalculateSerialStatus
     Call RemoveSheets
     Call FormatSheets
+End Sub
+
+Private Sub RemoveZeroShipAndZeroBinQty()
+    Dim i&, last_row&
+    last_row = Sheets("Serial File").Range("A65535").End(xlUp).Row
+    
+    For i = last_row To 2 Step -1
+        If Sheets("Serial File").Range("O" & i).value = 0 And _
+            Application.WorksheetFunction.CountIf(Sheets("Review Data").Range("A:A"), Sheets("Serial File").Range("A" & i)) = 0 Then
+                Sheets("Serial File").Range("A" & i).EntireRow.Delete
+        End If
+    Next i
 End Sub
 
 'ALL SUBS AND FUNCTIONS BELOW ARE CALLED FROM ExecuteProgramReview
@@ -76,11 +90,21 @@ Private Sub AdjustAllSheetHeaders()
     Call Headers.Convert("Price List")
 End Sub
 
+Private Sub NotScannedSerialsTab()
+    Dim NotScannedTab As NotScannedSerials
+    Set NotScannedTab = New NotScannedSerials
+    
+    Sheets.Add After:=Sheets("Price List")
+    activesheet.name = "Not Scanned"
+    
+    Call NotScannedTab.SetupTab
+End Sub
+
 Private Sub InactiveSerialsTab()
     Dim InactiveTab As InactiveSerials
     Set InactiveTab = New InactiveSerials
     
-    Sheets.Add After:=Sheets("Price List")
+    Sheets.Add After:=Sheets("Not Scanned")
     activesheet.name = "Inactive Serials"
     
     Call InactiveTab.CutDeletedCopyInactive
@@ -118,6 +142,7 @@ Private Sub CalculateSerialStatus()
     Set SerialStatus = New SerialCalculations
    
     SerialStatus.CalculateSerials
+    SerialStatus.MoveSerialStatus
 End Sub
 
 Private Sub RemoveSheets()
@@ -133,3 +158,11 @@ Private Sub FormatSheets()
     
     Call WorksheetFormat.FormatAllWorksheets(ReviewCustomer.name, ReviewCustomer.AcctNumber, ReviewCustomer.ReviewPeriod)
 End Sub
+
+
+Sub test()
+Range("I2").Formula = "=IF(ROUNDUP(SUM((G2/13)/E2),0)=1,2,IF(AND(ROUNDUP(SUM((G2/13)/E2),0)=0,H2>2),2,ROUNDUP(SUM((G2/13)/E2),0)))"
+
+
+End Sub
+
