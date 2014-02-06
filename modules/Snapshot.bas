@@ -6,6 +6,7 @@ Private RowColumnCount As RowsColsCount
 Private SnapshotPage As PageOptions
 Private SerialFileWS, SnapshotWS, WSFunct As Object
 Private CurrentValues As SnapshotValues
+Private SnapshotTextFormat As TextFormat
 
 ''============================================================
 ''  REVIEW Snapshot
@@ -30,6 +31,7 @@ Private Sub InstantiateCustomerObject()
     Call CustomerInfo.SetupSnapshotCustomer(activesheet.name)
     Set RowColumnCount = New RowsColsCount
     Set CurrentValues = New SnapshotValues
+    Set SnapshotTextFormat = New TextFormat
 End Sub
 
 Private Sub UpdateWorksheet()
@@ -199,11 +201,12 @@ Private Sub PartValues()
 '    SnapshotWS.Range("E28").Formula = "=SUM(E26:E27)" 'sum for ordered
 End Sub
 Private Sub LoopValues()
+    
     SnapshotWS.Range("H6").Value = CurrentValues.SalesValue
     SnapshotWS.Range("H7").Value = CurrentValues.NotScannedValue
     SnapshotWS.Range("H8").Formula = CurrentValues.InactiveValue
     SnapshotWS.Range("H6:J8").Select
-    Call TextFormatting.NmrFmt("$#,##0.00", xlRight)
+    Call SnapshotTextFormat.NmrFmt("$#,##0.00", xlRight)
 End Sub
 
 Private Sub LegendValues()
@@ -242,10 +245,10 @@ Private Sub BarGraph()
     ActiveChart.ChartArea.Select
     ActiveChart.Axes(xlCategory).Select
     Selection.TickLabels.AutoScaleFont = False
-    Call TextFormatting.ObjectFont(Selection.TickLabels.Font, "Arial", "Regular", 10, xlAutomatic)
+    Call SnapshotTextFormat.ObjectFont(Selection.TickLabels.Font, "Arial", "Regular", 10, xlAutomatic)
     ActiveChart.Axes(xlValue).Select
     Selection.TickLabels.AutoScaleFont = False
-    Call TextFormatting.ObjectFont(Selection.TickLabels.Font, "Arial", "Regular", 10, xlAutomatic)
+    Call SnapshotTextFormat.ObjectFont(Selection.TickLabels.Font, "Arial", "Regular", 10, xlAutomatic)
 End Sub
 Private Sub PieChartAdd()
     Dim myChtObj As ChartObject
