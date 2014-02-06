@@ -29,7 +29,7 @@ Private Sub CreateSnapshotSubMenu()
     Call NewMenu.AddSubMenu("Snapshot", _
         Array("Run Snapshot", "Publish Snapshot", "Import Snapshot", "Export Snapshot", "Version 1.0"), _
         Array(3524, 284, 106, 1679, 3998), _
-        Array("Snapshot.Run", "", "", "", ""))
+        Array("Snapshot.Run", "MenuActions.SaveSnapshot", "", "", ""))
 End Sub
 Private Sub CreateLblPrintSubMenu()
     Call NewMenu.AddSubMenu("AS400 Labels", _
