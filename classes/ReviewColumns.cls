@@ -39,7 +39,7 @@ Private Sub RemoveNumberAsTextError(cellRange As String)
     
     For Each uniqueCell In Range(cellRange)
         With uniqueCell.Errors(xlNumberAsText)
-            If .value = True Then
+            If .Value = True Then
                 .Ignore = True
             End If
         End With
@@ -55,18 +55,18 @@ End Sub
 Private Sub AddHeaders()
     'headers new columns
     With Sheets("Serial File")
-        .Range("F1").value = "Wkly Avg"
-        .Range("G1").value = "Ship Qty"
-        .Range("I1").value = "Proposed Bin Sys"
-        .Range("J1").value = "Proposed Add/Rem"
-        .Range("R1").value = "Pc Price"
-        .Range("S1").value = "MLV"
-        .Range("T1").value = "Net Chg Value"
-        .Range("U1").value = "PLV"
-        .Range("V1").value = "Serial Status"
-        .Range("W1").value = "To Review"
-        .Range("X1").value = "Sales < $15"
-        .Range("Y1").value = "Missing Pc Price"
+        .Range("F1").Value = "Wkly Avg"
+        .Range("G1").Value = "Ship Qty"
+        .Range("I1").Value = "Proposed Bin Sys"
+        .Range("J1").Value = "Proposed Add/Rem"
+        .Range("R1").Value = "Pc Price"
+        .Range("S1").Value = "MLV"
+        .Range("T1").Value = "Net Chg Value"
+        .Range("U1").Value = "PLV"
+        .Range("V1").Value = "Serial Status"
+        .Range("W1").Value = "To Review"
+        .Range("X1").Value = "Sales < $15"
+        .Range("Y1").Value = "Missing Pc Price"
         .Range("F:G,I:J,R:U").NumberFormat = "General"
     End With
 End Sub
@@ -99,9 +99,9 @@ Private Sub CleanUp(last_row&)
     Dim i%
     For i = 2 To last_row
         If Sheets("Serial File").Range("R" & i).Text = "#N/A" Then
-            Sheets("Serial File").Range("R" & i).value = 0
+            Sheets("Serial File").Range("R" & i).Value = 0
             Sheets("Serial File").Range("A" & i).Interior.ColorIndex = 3
-            Sheets("Serial File").Range("Y" & i).value = "x"
+            Sheets("Serial File").Range("Y" & i).Value = "x"
         End If
     Next i
 End Sub
@@ -154,7 +154,7 @@ End Sub
 Private Sub AddAvgScans(last_row&, review_weeks#)
     With Sheets("Serial File")
         .Columns("I:I").Insert Shift:=xlToRight
-        .Range("I1").value = "Avg Wkly Bin Scans"
+        .Range("I1").Value = "Avg Wkly Bin Scans"
         .Columns.NumberFormat = "General"
         .Range("I2").FormulaR1C1 = "=ROUNDUP(SUM((RC[-2]/RC[-4])/" & review_weeks & "),0)"
         .Range("I2:I" & last_row).FillDown

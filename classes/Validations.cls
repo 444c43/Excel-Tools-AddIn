@@ -59,7 +59,7 @@ Private Function SheetsContainHeaders(header_name$) As Boolean
     Dim sht As Worksheet
     SheetsContainHeaders = False
     For Each sht In ActiveWorkbook.Sheets
-        If sht.Range("A1").value = header_name Then
+        If sht.Range("A1").Value = header_name Then
             SheetsContainHeaders = True
             Exit Function
         End If

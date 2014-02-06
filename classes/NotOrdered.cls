@@ -27,8 +27,8 @@ Private Sub SetSearchHeader(header_text$)
 End Sub
 
 Private Sub AddHeaders()
-    Sheets("Parts Not Ordered").Range("A1").value = "Customer Part #"
-    Sheets("Parts Not Ordered").Range("B1").value = "GFC Part #"
+    Sheets("Parts Not Ordered").Range("A1").Value = "Customer Part #"
+    Sheets("Parts Not Ordered").Range("B1").Value = "GFC Part #"
 End Sub
 
 Private Sub FindNotOrderedParts()

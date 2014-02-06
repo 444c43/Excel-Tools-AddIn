@@ -29,8 +29,8 @@ Public Function Convert(sheet_name$)
 End Function
 
 Private Sub EvaluateHeader(x As Byte, y As Byte)
-    If HeadersAS400(y) = Range(Cells(1, x), Cells(1, x)).value Then
-        Range(Cells(1, x), Cells(1, x)).value = HeadersActual(y)
+    If HeadersAS400(y) = Range(Cells(1, x), Cells(1, x)).Value Then
+        Range(Cells(1, x), Cells(1, x)).Value = HeadersActual(y)
     End If
 End Sub
 

@@ -28,7 +28,7 @@ Private Sub UserForm_Initialize()
     Call SetFirstValues
     Call ShowMoWks
 ''  Set focus to first page
-    multiReview.value = 0
+    multiReview.Value = 0
 End Sub
 Private Sub SetInitialCustomerData()
     lblAcctName2.Caption = ReviewCustomer.name
@@ -111,14 +111,14 @@ Private Function DateChk() As Boolean
     End If
 End Function
 Private Sub EvaluatePeriods()
-    Select Case multiReview.value
+    Select Case multiReview.Value
         Case 0
-            Call SetPeriodAndWeeks((right(cbxQuarter.value, 9) & " " & cbxQuarterlyYr.value), 13)
+            Call SetPeriodAndWeeks((right(cbxQuarter.Value, 9) & " " & cbxQuarterlyYr.Value), 13)
         Case 1
-            Call SetPeriodAndWeeks(cbxMonth.value & " " & cbxYear.value, 4.3)
+            Call SetPeriodAndWeeks(cbxMonth.Value & " " & cbxYear.Value, 4.3)
         Case 2
-            Call SetPeriodAndWeeks(cbxVariedMo1.value & " " & cbxVariedYr1.value & _
-            " " & cbxVariedMo2.value & " " & cbxVariedYr2.value, TotalWeeks)
+            Call SetPeriodAndWeeks(cbxVariedMo1.Value & " " & cbxVariedYr1.Value & _
+            " " & cbxVariedMo2.Value & " " & cbxVariedYr2.Value, TotalWeeks)
     End Select
 End Sub
 Private Sub SetPeriodAndWeeks(period$, weeks#)
@@ -144,8 +144,8 @@ Private Function CalculateMonths%()
     Dim MonthsYr1 As Date
     Dim MonthsYr2 As Date
 
-    MonthsYr2 = DateSerial(cbxVariedYr2.value, cbxVariedMo2.ListIndex + 1, 1)
-    MonthsYr1 = DateSerial(cbxVariedYr1.value, cbxVariedMo1.ListIndex + 1, 1)
+    MonthsYr2 = DateSerial(cbxVariedYr2.Value, cbxVariedMo2.ListIndex + 1, 1)
+    MonthsYr1 = DateSerial(cbxVariedYr1.Value, cbxVariedMo1.ListIndex + 1, 1)
 
     CalculateMonths = DateDiff("m", MonthsYr1, MonthsYr2) + 1
 End Function

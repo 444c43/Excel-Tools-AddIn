@@ -30,8 +30,8 @@ Private Sub SetSearchHeader(header_text$)
 End Sub
 
 Private Sub AddHeaders()
-    Sheets("Missing Pc Price").Range("A1").value = "GFC Part #"
-    Sheets("Missing Pc Price").Range("B1").value = "Customer Part #"
+    Sheets("Missing Pc Price").Range("A1").Value = "GFC Part #"
+    Sheets("Missing Pc Price").Range("B1").Value = "Customer Part #"
 End Sub
 
 Private Sub FindMissingPcPrice()
@@ -42,8 +42,8 @@ Private Sub FindMissingPcPrice()
         If IsLastPart(i) = 1 Then
             If EvaluatePcPrice(i) = 0 Then
                 row_num = GetLastRow + 1
-                Sheets("Missing Pc Price").Range("A" & row_num).value = GFCPart.Cells(i, 1)
-                Sheets("Missing Pc Price").Range("B" & row_num).value = GFCPart.Cells(i, 0)
+                Sheets("Missing Pc Price").Range("A" & row_num).Value = GFCPart.Cells(i, 1)
+                Sheets("Missing Pc Price").Range("B" & row_num).Value = GFCPart.Cells(i, 0)
             End If
         End If
     Next i

@@ -13,7 +13,7 @@ Public Sub CutDeletedCopyInactive()
     Dim i%, last_row&
     last_row = Sheets("Serial File").Range("A65535").End(xlUp).Row
     
-    Sheets("Inactive Serials").Range("A1:AA1").value = Sheets("Serial File").Range("A1:AA1").value
+    Sheets("Inactive Serials").Range("A1:AA1").Value = Sheets("Serial File").Range("A1:AA1").Value
     
     For i = last_row To 2 Step -1
         Call EvaluateSerialStatus(i, GetLastRow)
@@ -21,7 +21,7 @@ Public Sub CutDeletedCopyInactive()
 End Sub
 
 Private Sub EvaluateSerialStatus(i%, inactive_last_row%)
-    Select Case Sheets("Serial File").Range("W" & i).value
+    Select Case Sheets("Serial File").Range("W" & i).Value
     Case "D"
         Sheets("Serial File").Rows(i).Cut
         Sheets("Inactive Serials").Range("A" & inactive_last_row).Select

@@ -39,7 +39,7 @@ Private Sub Constructor()
 End Sub
 Private Sub InitializeObjects()
     Call ReviewValidations.SetupObject("LIST80", "GFCCS1")
-    Call ReviewCustomer.SetupCustomerData("GFCCS1")
+    Call ReviewCustomer.SetupReviewCustomer("GFCCS1")
 End Sub
 Private Function CountErrors%()
     Call ReviewValidations.ValidateSheetNames(Array("Serial File", "Review Data", "Price List"))
@@ -66,6 +66,7 @@ Private Sub ExecuteProgramReview()
     Call CalculateSerialStatus
     Call RemoveSheets
     Call FormatSheets
+    Sheets(ReviewCustomer.AcctNumber).Select
 End Sub
 
 Private Sub RemoveZeroShipAndZeroBinQty()
@@ -73,7 +74,7 @@ Private Sub RemoveZeroShipAndZeroBinQty()
     last_row = Sheets("Serial File").Range("A65535").End(xlUp).Row
     
     For i = last_row To 2 Step -1
-        If Sheets("Serial File").Range("O" & i).value = 0 And _
+        If Sheets("Serial File").Range("O" & i).Value = 0 And _
             Application.WorksheetFunction.CountIf(Sheets("Review Data").Range("A:A"), Sheets("Serial File").Range("A" & i)) = 0 Then
                 Sheets("Serial File").Range("A" & i).EntireRow.Delete
         End If

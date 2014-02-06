@@ -13,7 +13,33 @@ Public Sub FormatAllWorksheets(customer_name$, acct_number$, review_period$)
     Call AllWorksheets
     Call ReviewWorksheet(customer_name, acct_number, review_period)
 End Sub
-
+Public Sub SnapshotBorders()
+    'border edges
+    Sheets("Snapshot").Select
+    
+    Range("A1:K2,B4:E10,G4:J8,B24:E28,G23:J31").Select
+    Call BorderEdges(xlContinuous, xlThick, xlAutomatic)
+    Range("A1:K41").Select
+    Call BorderEdges(xlContinuous, xlThick, xlAutomatic)
+   
+    'border insides
+    Range("B4:E10,G4:J8,B24:E28,G23:J31").Select
+    Call BorderInside(xlContinuous, xlThin, xlAutomatic)
+End Sub
+Public Sub MergeCells(rge As String)
+    Range(rge).Select
+    With Selection
+        .HorizontalAlignment = xlCenter
+        .VerticalAlignment = xlCenter
+        .MergeCells = True
+    End With
+End Sub
+Public Sub CellColor()
+    With Selection.Interior
+        .ColorIndex = 11
+        .Pattern = xlSolid
+    End With
+End Sub
 Private Sub AllWorksheets()
     Dim current_sheet As Worksheet
     
@@ -25,15 +51,15 @@ Private Sub IterateSheets(sheet_name$)
         Sheets(sheet_name).Select
         Rows("1:1").Font.Bold = True
         Cells.EntireColumn.AutoFit
-        Call BorderEdges
-        Call BorderInside
+        Range("A1:" & ActiveCell.SpecialCells(xlLastCell).Address).Select
+        Call BorderEdges(xlContinuous, xlThin, xlAutomatic)
+        Call BorderInside(xlContinuous, xlThin, xlAutomatic)
         Call SetFirstCell
 End Sub
-Private Sub BorderEdges()
+Private Sub BorderEdges(Style As String, Wght As String, ColIndex As Variant)
     Dim BorderObject(3) As Object
     Dim x%
     'set objects
-    Range("A1:" & ActiveCell.SpecialCells(xlLastCell).Address).Select
     
     Set BorderObject(0) = Selection.Borders(xlEdgeLeft)
     Set BorderObject(1) = Selection.Borders(xlEdgeRight)
@@ -43,26 +69,24 @@ Private Sub BorderEdges()
     'set selected range
     For x = 0 To 3
         With BorderObject(x)
-            .LineStyle = xlContinuous
-            .Weight = xlThin
-            .ColorIndex = xlAutomatic
+            .LineStyle = Style
+            .Weight = Wght
+            .ColorIndex = ColIndex
         End With
     Next x
 End Sub
-Private Sub BorderInside()
+Private Sub BorderInside(Style As String, Wght As String, ColIndex As Variant)
     Dim BorderObject(1) As Object
     Dim x%
-    'set objects
-    Range("A1:" & ActiveCell.SpecialCells(xlLastCell).Address).Select
     
     Set BorderObject(0) = Selection.Borders(xlInsideVertical)
     Set BorderObject(1) = Selection.Borders(xlInsideHorizontal)
     'set selected range
     For x = 0 To 1
         With BorderObject(x)
-            .LineStyle = xlContinuous
-            .Weight = xlThin
-            .ColorIndex = xlAutomatic
+            .LineStyle = Style
+            .Weight = Wght
+            .ColorIndex = ColIndex
         End With
     Next x
 End Sub
@@ -75,3 +99,4 @@ Private Sub ReviewWorksheet(customer_name$, acct_number$, review_period$)
     Sheets(acct_number).PageSetup.LeftHeader = customer_name
     Sheets(acct_number).PageSetup.RightHeader = review_period
 End Sub
+

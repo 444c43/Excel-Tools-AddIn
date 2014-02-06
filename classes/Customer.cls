@@ -22,17 +22,23 @@ Private LastColumn%, LastRow%
 Private CustomerList As CustomerData
 Private SearchRange, CustomerNumber As Range
 
-Public Sub SetupCustomerData(header As String)
+Public Sub SetupReviewCustomer(header As String)
     LastRow = ActiveCell.SpecialCells(xlLastCell).Row
     LastColumn = Range("IV1").End(xlToLeft).Column
     Call SetObjects(header)
+    Call AddCustomerDetails(CustomerNumber.Cells(2, 1))
+End Sub
+Public Sub SetupSnapshotCustomer(account_number$)
+    Call AddCustomerDetails(account_number)
+End Sub
+Private Sub AddCustomerDetails(account_number$)
+    Set CustomerList = New CustomerData
     CustomerList.Setup
-    acct_number = CustomerNumber.Cells(2, 1)
+    acct_number = account_number
     Call SetProperties(FindCollectionIndex)
     Call Destructor
 End Sub
 Private Sub SetObjects(header_text$)
-    Set CustomerList = New CustomerData
     Set SearchRange = Range(Cells(1, 1), Cells(1, LastColumn))
     Set CustomerNumber = Range(SearchRange.Find(header_text).Address)
 End Sub
@@ -90,20 +96,20 @@ End Property
 Public Property Get ReviewPeriod() As String
     ReviewPeriod = review_period
 End Property
-Public Property Let ReviewPeriod(value As String)
-    review_period = value
+Public Property Let ReviewPeriod(Value As String)
+    review_period = Value
 End Property
 
 Public Property Get ReviewWeeks() As Double
     ReviewWeeks = review_weeks
 End Property
-Public Property Let ReviewWeeks(value As Double)
-    review_weeks = value
+Public Property Let ReviewWeeks(Value As Double)
+    review_weeks = Value
 End Property
 
 Public Property Get Formula() As String
     Formula = acct_formula
 End Property
-Public Property Let Formula(value As String)
-    acct_formula = value
+Public Property Let Formula(Value As String)
+    acct_formula = Value
 End Property

@@ -19,21 +19,21 @@ Sub CalculateSerials()
         
         If CheckIfScanned = False Then
             If NotScanned Then
-                Sheets("Serial File").Range("W" & i).value = "Not Scanned"
+                Sheets("Serial File").Range("W" & i).Value = "Not Scanned"
             ElseIf InactiveZero Then
                 Sheets("Serial File").Rows(i).Delete
                 'Sheets("Serial File").Range("W" & i).value = "Inactive Zero Bins"
             ElseIf Inactive Then
-                Sheets("Serial File").Range("W" & i).value = "Inactive"
+                Sheets("Serial File").Range("W" & i).Value = "Inactive"
             ElseIf ToReview Then
-                Sheets("Serial File").Range("X" & i).value = "x" 'to review
+                Sheets("Serial File").Range("X" & i).Value = "x" 'to review
             End If
         Else
-            Sheets("Serial File").Range("W" & i).value = "Scanned"
+            Sheets("Serial File").Range("W" & i).Value = "Scanned"
         End If
         
         If CalculateSalesUnder15(i) Then
-            Sheets("Serial File").Range("Y" & i).value = "x"
+            Sheets("Serial File").Range("Y" & i).Value = "x"
         End If
     Next i
 End Sub
@@ -52,9 +52,9 @@ End Sub
 'End Sub
 
 Private Sub UpdateValues(i&)
-    ShipQty = Sheets("Serial File").Range("G" & i).value
-    BinSys = Sheets("Serial File").Range("H" & i).value
-    NoCharge = Sheets("Serial File").Range("Q" & i).value
+    ShipQty = Sheets("Serial File").Range("G" & i).Value
+    BinSys = Sheets("Serial File").Range("H" & i).Value
+    NoCharge = Sheets("Serial File").Range("Q" & i).Value
 End Sub
 
 Private Function CheckIfScanned() As Boolean
@@ -74,5 +74,5 @@ Private Function ToReview() As Boolean
         ShipQty > 0 And NoCharge = "I" And BinSys = 0 Or ShipQty = 0 And NoCharge <> "I" And BinSys = 0)
 End Function
 Private Function CalculateSalesUnder15(i&)
-    CalculateSalesUnder15 = (ShipQty > 0 And ShipQty * Sheets("Serial File").Range("S" & i).value < 15)
+    CalculateSalesUnder15 = (ShipQty > 0 And ShipQty * Sheets("Serial File").Range("S" & i).Value < 15)
 End Function

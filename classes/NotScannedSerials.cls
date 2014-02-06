@@ -13,7 +13,7 @@ Public Sub SetupTab()
     Dim i&, last_row&
     last_row = Sheets("Serial File").Range("A65535").End(xlUp).Row
     
-    Sheets("Not Scanned").Range("A1:AA1").value = Sheets("Serial File").Range("A1:AA1").value
+    Sheets("Not Scanned").Range("A1:AA1").Value = Sheets("Serial File").Range("A1:AA1").Value
     Sheets("Review Data").Columns("A:A").TextToColumns Destination:=Range("A1"), DataType:=xlDelimited
     
     For i = last_row To 2 Step -1
@@ -25,7 +25,7 @@ Public Sub SetupTab()
 End Sub
 
 Private Function BinQtyZeroAndNotScanned(i&) As Boolean
-    BinQtyZeroAndNotScanned = (Application.WorksheetFunction.CountIf(Sheets("Review Data").Range("A:A"), Sheets("Serial File").Range("A" & i).value) = 0)
+    BinQtyZeroAndNotScanned = (Application.WorksheetFunction.CountIf(Sheets("Review Data").Range("A:A"), Sheets("Serial File").Range("A" & i).Value) = 0)
 End Function
 
 Private Function GetLastRow%()

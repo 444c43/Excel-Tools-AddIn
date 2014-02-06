@@ -35,12 +35,12 @@ Private Sub cmdCalc_Click()
     MsgBox "A total of " & UniqueItems.CountUnique(cbxColLetters.Text) & " unique items found in column " & cbxColLetters.Text & "."
 End Sub
 
-Private Function GetColumnLetters$(value$)
+Private Function GetColumnLetters$(Value$)
     'select case if A:A or AA:AA
-    Select Case Len(value)
+    Select Case Len(Value)
         Case 3
-            GetColumnLetters = left(value, 1)
+            GetColumnLetters = left(Value, 1)
         Case 5
-            GetColumnLetters = left(value, 2)
+            GetColumnLetters = left(Value, 2)
     End Select
 End Function

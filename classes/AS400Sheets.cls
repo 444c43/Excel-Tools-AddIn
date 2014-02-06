@@ -22,7 +22,7 @@ End Sub
 Private Sub AddHeaderValues(Headers)
     Dim x As Byte
     For x = 0 To UBound(Headers)
-        Range(Cells(1, x + 1), Cells(1, x + 1)).value = Headers(x)
+        Range(Cells(1, x + 1), Cells(1, x + 1)).Value = Headers(x)
     Next x
 End Sub
 
