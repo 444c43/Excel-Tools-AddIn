@@ -75,30 +75,27 @@ End Sub
 Private Sub Borders()
     Dim CellsToMerge(), ColumnRanges(), RowRanges() As Variant
     Dim ColumnWidths(), RowHeight() As Variant
+    Dim SnapshotFormat As WorksheetFormatting
     
+    Set SnapshotFormat = New WorksheetFormatting
+        
     'Set column and row sizes
     ColumnRanges = Array("A:A,F:F,K:K", "B:B,G:G", "C:C,H:H", "D:E,I:J")
     ColumnWidths = Array(4, 20, 12, 10)
     RowRanges = Array("1:1", "2:2", "4:4,23:23,24:24", "3:3,5:22,25:41")
     RowHeight = Array(24, 18.75, 16.5, 12.75)
     
-    Call SheetFormatting.SetColumnAndRowSizes(ColumnRanges, ColumnWidths, RowRanges, RowHeight)
-                
-    'Merge cells
-    'VMI Customer, Stock WHSE, Period, Del Freq | serial & part numbers, sales, legend
-    'right side legend merges
-    CellsToMerge = Array("A1:F1,G1:K1,A2:F2,G2:K2", "B4:E4,B24:E24,G4:J4,G23:J23", _
-        "H24:J24,H25:J25,H26:J26,H27:J27", "H28:J28,H29:J29,H30:J30,H31:J31")
+    Call SnapshotFormat.SetColumnAndRowSizes(ColumnRanges, ColumnWidths, RowRanges, RowHeight)
         
-    'inside color
-    Call SheetFormatting.CellColor("A1:K2,B4:E4,G4:J4,B24:E24,G23:J23", 11)
+    Call SnapshotFormat.MergeCells("A1:F1,G1:K1,A2:F2,G2:K2")
+    Call SnapshotFormat.MergeCells("B4:E4,B24:E24,G4:J4,G23:J23")
+    Call SnapshotFormat.MergeCells("H24:J24,H25:J25,H26:J26,H27:J27")
+    Call SnapshotFormat.MergeCells("H28:J28,H29:J29,H30:J30,H31:J31")
     
-    'border edges
-    Call SheetFormatting.BorderEdges("A1:K2,B4:E10,G4:J8,B24:E28,G23:J31", xlContinuous, xlThick, xlAutomatic)
-    Call SheetFormatting.BorderEdges("A1:K41", xlContinuous, xlThick, xlAutomatic)
-   
-    'border insides
-    Call SheetFormatting.BorderInside("B4:E10,G4:J8,B24:E28,G23:J31", xlContinuous, xlThin, xlAutomatic)
+    Range("A1:K2,B4:E4,G4:J4,B24:E24,G23:J23").Select
+    Call SnapshotFormat.CellColor
+    
+    SnapshotFormat.SnapshotBorders
 End Sub
 
 Private Sub Headers()

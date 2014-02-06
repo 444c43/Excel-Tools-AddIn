@@ -100,3 +100,24 @@ Private Sub ReviewWorksheet(customer_name$, acct_number$, review_period$)
     Sheets(acct_number).PageSetup.RightHeader = review_period
 End Sub
 
+Sub SetColumnAndRowSizes(col_rge As Variant, col_width As Variant, row_rge As Variant, row_height As Variant)
+    Call SetColumnWidth(col_rge, col_width)
+    Call SetRowHeight(row_rge, row_height)
+End Sub
+
+Private Sub SetColumnWidth(col_rge As Variant, col_width As Variant)
+    Dim i As Byte
+    
+    For i = 0 To UBound(col_rge)
+        Range(col_rge(i)).ColumnWidth = col_width(i)
+    Next i
+End Sub
+
+Private Sub SetRowHeight(row_rge As Variant, row_height As Variant)
+    Dim i As Byte
+    
+    For i = 0 To UBound(row_rge)
+        Range(row_rge(i)).RowHeight = row_height(i)
+    Next i
+End Sub
+
