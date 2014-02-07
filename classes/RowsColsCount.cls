@@ -13,7 +13,7 @@ Private row_count%
 Private column_count%
 Private sheet_name$
 
-Public Sub UpdateProperties(sheet_name$)
+Public Sub GetRowsAndCols(sheet_name$)
     Sheets(sheet_name).Select
     row_count = Sheets(sheet_name).Range("A65536").End(xlUp).Row
     column_count = Sheets(sheet_name).Range("IV1").End(xlToLeft).Column

@@ -13,9 +13,10 @@ Private LastColumn%, LastRow%
 Private SearchRange As Range
 Private WSFunction As Object
 'serial values
-Private scanned_total%, not_scanned_total%, inactive_total%, missing_price%
+Private scanned_total%, not_scanned_total%
+Private inactive_total%, missing_price%, weekly_avg%
 '   serial value headers
-Private MissingPcPrice As Range
+Private SerialValues As Range
 Private SerialStatus As Range
 'part values
 Private ordered_parts%, not_ordered_parts%
@@ -44,13 +45,16 @@ End Sub
 Private Sub SetSerialValues()
     'set range
     Set SerialStatus = Range(SearchRange.Find("Serial Status").Address)
-    Set MissingPcPrice = Range(SearchRange.Find("Pc Price").Address)
+    Set SerialValues = Range(SearchRange.Find("Pc Price").Address)
     
     ' set values
     scanned_total = WSFunction.CountIf(SerialStatus.EntireColumn, "Scanned")
     not_scanned_total = WSFunction.CountIf(SerialStatus.EntireColumn, "Not Scanned")
     inactive_total = WSFunction.CountIf(SerialStatus.EntireColumn, "Inactive")
-    missing_price = WSFunction.CountIf(MissingPcPrice.EntireColumn, 0)
+    missing_price = WSFunction.CountIf(SerialValues.EntireColumn, 0)
+    
+    Set SerialValues = Range(SearchRange.Find("Avg Wkly Bin Scans").Address)
+    weekly_avg = WSFunction.Sum(SerialValues.EntireColumn)
 End Sub
 
 Private Sub SetPartValues()
@@ -127,6 +131,10 @@ End Property
 
 Public Property Get Missing%()
     Missing = missing_price
+End Property
+
+Public Property Get WeeklyAvg%()
+    WeeklyAvg = weekly_avg
 End Property
 
 Public Property Get OrderedParts%()

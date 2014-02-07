@@ -2,7 +2,7 @@ Attribute VB_Name = "Snapshot"
 Option Explicit
 Private x, TotalRows%
 Private CustomerInfo As New Customer
-Private RowColumnCount As RowsColsCount
+Private RowsAndColumns As RowsColsCount
 Private SnapshotPage As PageOptions
 Private SerialFileWS, SnapshotWS, WSFunct As Object
 Private CurrentValues As SnapshotValues
@@ -15,7 +15,7 @@ Private SnapshotTextFormat As TextFormat
 Public Sub Run()
     Application.ScreenUpdating = False
         Call InstantiateCustomerObject
-        Call RowColumnCount.UpdateProperties(CustomerInfo.AcctNumber)
+        Call RowsAndColumns.GetRowsAndCols(CustomerInfo.AcctNumber)
         Sheets.Add
         Call UpdateWorksheet
         Call InstantiateSheetObjects
@@ -29,7 +29,7 @@ End Sub
 Private Sub InstantiateCustomerObject()
     Set CustomerInfo = New Customer
     Call CustomerInfo.SetupSnapshotCustomer(activesheet.name)
-    Set RowColumnCount = New RowsColsCount
+    Set RowsAndColumns = New RowsColsCount
     Set CurrentValues = New SnapshotValues
     Set SnapshotTextFormat = New TextFormat
 End Sub
@@ -71,8 +71,6 @@ Private Sub AddGraphs()
     Call BarGraph
     Call PieChartAdd
 End Sub
-'    remove price data
-'    SerialFileWS.Range("R:U").Delete
 
 Private Sub Borders()
     Dim CellsToMerge(), ColumnRanges(), RowRanges() As Variant
@@ -84,17 +82,17 @@ Private Sub Borders()
     'Set column and row sizes
     ColumnRanges = Array("A:A,F:F,K:K", "B:B,G:G", "C:C,H:H", "D:E,I:J")
     ColumnWidths = Array(4, 20, 12, 10)
-    RowRanges = Array("1:1", "2:2", "4:4,23:23,24:24", "3:3,5:22,25:41")
+    RowRanges = Array("1:1", "2:2", "4:4,23:23,25:25", "3:3,5:22,25:41")
     RowHeight = Array(24, 18.75, 16.5, 12.75)
     
     Call SnapshotFormat.SetColumnAndRowSizes(ColumnRanges, ColumnWidths, RowRanges, RowHeight)
         
     Call SnapshotFormat.MergeCells("A1:F1,G1:K1,A2:F2,G2:K2")
-    Call SnapshotFormat.MergeCells("B4:E4,B24:E24,G4:J4,G23:J23")
+    Call SnapshotFormat.MergeCells("B4:E4,B25:E25,G4:J4,G23:J23")
     Call SnapshotFormat.MergeCells("H24:J24,H25:J25,H26:J26,H27:J27")
     Call SnapshotFormat.MergeCells("H28:J28,H29:J29,H30:J30,H31:J31")
     
-    Range("A1:K2,B4:E4,G4:J4,B24:E24,G23:J23").Select
+    Range("A1:K2,B4:E4,G4:J4,B25:E25,G23:J23").Select
     Call SnapshotFormat.CellColor
     
     SnapshotFormat.SnapshotBorders
@@ -102,7 +100,7 @@ End Sub
 
 Private Sub Headers()
     'major headers
-    Call TextInCell(Array("A1", "G1", "A2", "G2", "B4", "B24", "G4", "G23"), _
+    Call TextInCell(Array("A1", "G1", "A2", "G2", "B4", "B25", "G4", "G23"), _
         Array(18, 18, 14, 14, 12, 12, 12, 12), _
         Array("General Fasteners Customer Review", "Stock WHSE: " & CustomerInfo.ShippingWHSE, _
         CustomerInfo.name & " : " & Sheets(CustomerInfo.AcctNumber).PageSetup.RightHeader, _
@@ -115,7 +113,7 @@ Private Sub Headers()
         
     'sub headers - serial numbers
     Call SetMultipleCellValues( _
-        Array("B6", "B7", "B8", "B10"), Array("Scanned", "Not Scanned", "Inactive", "Missing Piece Price"))
+        Array("B6", "B7", "B8", "B10", "B11"), Array("Scanned", "Not Scanned", "Inactive", "Missing Piece Price", "Wkly Bin Scan Avg"))
 
     'sub headers - part numbers
     Call SetMultipleCellValues( _
@@ -130,8 +128,8 @@ Private Sub Headers()
     SnapshotWS.Range("C5:E5,H5:J5,C25:E25").Font.Italic = True
     SnapshotWS.Range("C5:E5,H5:J5,C25:E25").HorizontalAlignment = xlCenter
     'headers, italic (left)
-    SnapshotWS.Range("B6:B10,G6:G8,B26:B28,G24:G31").Font.Italic = True
-    SnapshotWS.Range("B6:B10,G6:G8,B26:B28,G24:G31").HorizontalAlignment = xlRight
+    SnapshotWS.Range("B6:B11,G6:G8,B26:B28,G24:G31").Font.Italic = True
+    SnapshotWS.Range("B6:B11,G6:G8,B26:B28,G24:G31").HorizontalAlignment = xlRight
     'items in blue to denote sum total
     SnapshotWS.Range("B6:B8,B26,B27").Font.ColorIndex = 5
     'sales and serial values header colors
@@ -185,6 +183,7 @@ Private Sub SerialValues()
     SnapshotWS.Range("C7").Value = CurrentValues.NotScanned
     SnapshotWS.Range("C8").Value = CurrentValues.Inactive
     SnapshotWS.Range("C10").Value = CurrentValues.Missing
+    SnapshotWS.Range("C11").Value = CurrentValues.WeeklyAvg
     
     SnapshotWS.Range("C9").Formula = "=SUM(C6:C8)" 'sum formula for serials
     SnapshotWS.Range("C9:E9").FillRight
@@ -253,7 +252,7 @@ End Sub
 Private Sub PieChartAdd()
     Dim myChtObj As ChartObject
     
-    Set myChtObj = activesheet.ChartObjects.Add(left:=25, Width:=288, top:=160, Height:=140)
+    Set myChtObj = activesheet.ChartObjects.Add(left:=25, Width:=288, top:=175, Height:=140)
     
     With myChtObj.Chart
         .ChartType = xlPie
@@ -297,8 +296,4 @@ Private Sub PieChartAdd()
         .SeriesCollection(1).DataLabels.Font.Size = 10
     End With
 End Sub
-
-
-
-
 
