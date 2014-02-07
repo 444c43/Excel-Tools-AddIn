@@ -45,33 +45,26 @@ Private Sub SaveSnapshotData(filename$)
     'SaveToFile = "T:\Repository\Program Management\Z-Review Data" & filename & ".txt"
     Close #1
     Open SaveToFile For Output As #1
-    'current serials
-    Print #1, Snapshot.Range("C6").Value ' scanned
-    Print #1, Snapshot.Range("C7").Value 'notscanned
-    Print #1, Snapshot.Range("C8").Value 'inactive
-    Print #1, Snapshot.Range("C10").Value 'missing
-    'previous serials
-    Print #1, Snapshot.Range("D6").Value 'scanned
-    Print #1, Snapshot.Range("D7").Value 'notscanned
-    Print #1, Snapshot.Range("D8").Value 'inactive
-    Print #1, Snapshot.Range("D10").Value 'missing
-    'current parts
-    Print #1, Snapshot.Range("C26").Value 'ordered
-    Print #1, Snapshot.Range("C27").Value 'notordered
-    'previous parts
-    Print #1, Snapshot.Range("D26").Value 'ordered
-    Print #1, Snapshot.Range("D27").Value 'notordered
-    'current pricing
-    Print #1, Snapshot.Range("H6").Value 'salesvalue
-    Print #1, Snapshot.Range("H7").Value 'notscannedvalue
-    Print #1, Snapshot.Range("H8").Value 'inactivevalue
-    'previous pricing
-    Print #1, Snapshot.Range("I6").Value 'salesvalue
-    Print #1, Snapshot.Range("I7").Value 'notscannedvalue
-    Print #1, Snapshot.Range("I8").Value 'inactivevalue
-    
+        'current serials
+        Call PrintArrayToFile(Array("C6", "C7", "C8", "C10", "C11"))
+        'previous serials
+        Call PrintArrayToFile(Array("D6", "D7", "D8", "D10", "D11"))
+        'current parts
+        Call PrintArrayToFile(Array("C26", "C27"))
+        'previous parts
+        Call PrintArrayToFile(Array("D26", "D27"))
+        'current pricing
+        Call PrintArrayToFile(Array("H6", "H7", "H8"))
+        'previous pricing
+        Call PrintArrayToFile(Array("I6", "I7", "I8"))
     Close #1
     MsgBox ("Saved as " & SaveToFile)
+End Sub
+Private Sub PrintArrayToFile(ranges_arry)
+    Dim element As Variant
+    For Each element In ranges_arry
+        Print #1, Snapshot.Range(element)
+    Next element
 End Sub
 
 Private Sub GetAndStoreFilenames()
@@ -123,28 +116,22 @@ End Function
 Private Sub InsertDataToSnapshot()
     Dim SaveToFile
     Set Snapshot = Worksheets("Snapshot")
-    'current serials
-    Snapshot.Range("D6").Value = SnapshotData(1)
-    Snapshot.Range("D7").Value = SnapshotData(2)
-    Snapshot.Range("D8").Value = SnapshotData(3)
-    Snapshot.Range("D10").Value = SnapshotData(4)
-    'previous serials
-    Snapshot.Range("E6").Value = SnapshotData(5)
-    Snapshot.Range("E7").Value = SnapshotData(6)
-    Snapshot.Range("E8").Value = SnapshotData(7)
-    Snapshot.Range("E10").Value = SnapshotData(8)
-    'current parts
-    Snapshot.Range("D26").Value = SnapshotData(9)
-    Snapshot.Range("D27").Value = SnapshotData(10)
-    'previous parts
-    Snapshot.Range("E26").Value = SnapshotData(11)
-    Snapshot.Range("E27").Value = SnapshotData(12)
-    'current pricing
-    Snapshot.Range("I6").Value = SnapshotData(13)
-    Snapshot.Range("I7").Value = SnapshotData(14)
-    Snapshot.Range("I8").Value = SnapshotData(15)
-    'previous pricing
-    Snapshot.Range("J6").Value = SnapshotData(16)
-    Snapshot.Range("J7").Value = SnapshotData(17)
-    Snapshot.Range("J8").Value = SnapshotData(18)
+        'current serials
+        Call SetValuesFromFile(Array("D6", "D7", "D8", "D10", "D11"), Array(1, 2, 3, 4, 5))
+        'previous serials
+        Call SetValuesFromFile(Array("E6", "E7", "E8", "E10", "E11"), Array(6, 7, 8, 9, 10))
+        'current parts
+        Call SetValuesFromFile(Array("D26", "D27"), Array(11, 12))
+        'previous parts
+        Call SetValuesFromFile(Array("E26", "E27"), Array(13, 14))
+        'current pricing
+        Call SetValuesFromFile(Array("I6", "I7", "I8"), Array(15, 16, 17))
+        'previous pricing
+        Call SetValuesFromFile(Array("J6", "J7", "J8"), Array(18, 19, 20))
+End Sub
+Private Sub SetValuesFromFile(ranges_arry, collection_element)
+    Dim count%, i%
+    For i = 0 To UBound(ranges_arry)
+        Snapshot.Range(ranges_arry(i)).Value = SnapshotData(collection_element(i))
+    Next i
 End Sub
