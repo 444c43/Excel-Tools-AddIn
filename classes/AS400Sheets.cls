@@ -16,7 +16,7 @@ Public Sub SetupAS400Sheets(sheet_names, sheet_headers)
     Call AS400Labels.AdjustSheets(sheet_names)
     Call AddHeaderValues(sheet_headers)
     Call FormatHeaders(sheet_headers)
-    Call FormatSheet.ResizeAllCells
+    Call ResizeAllCells
 End Sub
 
 Private Sub AddHeaderValues(Headers)
@@ -31,4 +31,9 @@ Private Sub FormatHeaders(Headers)
     Range("A1:A2").Font.Bold = True
     Range("A1:A2").Font.ColorIndex = 3
     Range(Cells(1, 2), Cells(1, UBound(Headers) + 1)).Font.Bold = True
+End Sub
+
+Private Sub ResizeAllCells()
+    Cells.EntireColumn.AutoFit
+    Range("A1").Select
 End Sub
