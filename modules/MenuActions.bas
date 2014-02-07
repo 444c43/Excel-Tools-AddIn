@@ -1,5 +1,6 @@
 Attribute VB_Name = "MenuActions"
 Option Explicit
+Private SnapshotImportExport As ImpExpSnapshot
 
 Public Sub CountUniqueItems()
     frmUnique.Show
@@ -13,4 +14,14 @@ On Error GoTo ErrorHandler:
     Exit Sub
 ErrorHandler:
     MsgBox ("No Snapshot Available. Check Sheet Names!")
+End Sub
+
+Public Sub ImportSnapshot()
+    Set SnapshotImportExport = New ImpExpSnapshot
+    SnapshotImportExport.Import
+End Sub
+
+Public Sub ExportSnapshot()
+    Set SnapshotImportExport = New ImpExpSnapshot
+    SnapshotImportExport.Export
 End Sub
