@@ -19,8 +19,8 @@ Public Sub Run()
         Sheets.Add
         Call UpdateWorksheet
         Call InstantiateSheetObjects
-        Call CreateLayout
         Call AddValues
+        Call CreateLayout
         Call AddGraphs
         SnapshotWS.Range("A1").Select
     Application.ScreenUpdating = True

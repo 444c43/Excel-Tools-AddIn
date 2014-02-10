@@ -13,11 +13,11 @@ Private Snapshot As Worksheet
 Private SnapshotData As Collection
 Private FileNames() As Variant
 
-Public Sub Export(directory$)
+Public Sub Export()
     If CheckForSnapshot Then
         Dim SaveAsName$
         SaveAsName = Sheets("Snapshot").PageSetup.RightFooter
-        Call SaveSnapshotData(SaveAsName, directory)
+        Call SaveSnapshotData(SaveAsName)
     Else
         MsgBox ("No Snapshot Available!")
     End If
@@ -37,11 +37,12 @@ Public Sub Import()
 ErrorControl:
 End Sub
 
-Private Sub SaveSnapshotData(filename$, directory$)
+Private Sub SaveSnapshotData(filename$)
     Dim SaveToFile
     Set Snapshot = Worksheets("Snapshot")
     'CHANGE THE FILE LOCATION
-    SaveToFile = directory & filename & ".txt"
+    SaveToFile = "C:\Users\dl_2\Desktop\" & filename & ".txt"
+    'SaveToFile = "T:\Repository\Program Management\Z-Review Data" & filename & ".txt"
     Close #1
     Open SaveToFile For Output As #1
         'current serials

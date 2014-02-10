@@ -17,13 +17,13 @@ Public Sub SnapshotBorders()
     'border edges
     Sheets("Snapshot").Select
     
-    Range("A1:K2,B4:E11,G4:J8,B25:E29,G23:J31").Select
+    Range("A1:K2,B4:E11,G4:J8,B25:E28,G23:J31").Select
     Call BorderEdges(xlContinuous, xlThick, xlAutomatic)
     Range("A1:K41").Select
     Call BorderEdges(xlContinuous, xlThick, xlAutomatic)
    
     'border insides
-    Range("B4:E11,G4:J8,B25:E29,G23:J31").Select
+    Range("B4:E11,G4:J8,B25:E28,G23:J31").Select
     Call BorderInside(xlContinuous, xlThin, xlAutomatic)
 End Sub
 Public Sub MergeCells(rge As String)

@@ -23,6 +23,5 @@ End Sub
 
 Public Sub ExportSnapshot()
     Set SnapshotImportExport = New ImpExpSnapshot
-    'T:\Repository\Program Management\Z-Review Data\
-    SnapshotImportExport.Export ("C:\Users\dl_2\Desktop\")
+    SnapshotImportExport.Export
 End Sub
