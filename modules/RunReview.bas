@@ -3,6 +3,7 @@ Option Explicit
 Public ReviewValidations As New Validations
 Public UserMessage As New Message
 Public ReviewCustomer As Customer
+Private NewReviewSheets As ReviewSheets
 
 Sub SetupSheets()
     Dim ReviewSheets As SheetSetups
@@ -58,10 +59,7 @@ Private Sub ExecuteProgramReview()
     'EXECUTE PROGRAM HERE ALL VALIDATIONS PASS
     Call RemoveZeroShipAndZeroBinQty
     Call AdjustAllSheetHeaders
-    Call NotScannedSerialsTab
-    Call InactiveSerialsTab
-    Call PartsNotOrderedTab
-    Call MissingPcPriceTab
+    Call AddNewTabs
     Call AddReviewColumns
     Call CalculateSerialStatus
     Call RemoveSheets
@@ -91,44 +89,35 @@ Private Sub AdjustAllSheetHeaders()
     Call Headers.ConvertHeaders("Price List")
 End Sub
 
-Private Sub NotScannedSerialsTab()
-    Dim NotScannedTab As NotScannedSerials
-    Set NotScannedTab = New NotScannedSerials
-    
-    Sheets.Add After:=Sheets("Price List")
-    activesheet.name = "Not Scanned"
-    
-    Call NotScannedTab.SetupTab
+Private Sub AddNewTabs()
+    Set NewReviewSheets = New ReviewSheets
+    Call NewReviewSheets.InstantiateVariables
+    Call SetupNotScannedTab
+    Call SetupInactiveTab
+    Call SetupPartsNotOrderedTab
+    Call SetupMissingPcPriceTab
 End Sub
-
-Private Sub InactiveSerialsTab()
-    Dim InactiveTab As InactiveSerials
-    Set InactiveTab = New InactiveSerials
-    
-    Sheets.Add After:=Sheets("Not Scanned")
-    activesheet.name = "Inactive Serials"
-    
-    Call InactiveTab.CutDeletedCopyInactive
+Private Sub SetupNotScannedTab()
+    'NotScannedTab
+    Call NewReviewSheets.AddNewSheet("Not Scanned", "Price List")
+    Call NewReviewSheets.CopyHeaders("Serial File", "Not Scanned")
+    Call NewReviewSheets.CopyPasteNotScanned
 End Sub
-
-Private Sub PartsNotOrderedTab()
-    Dim UnorderedParts As NotOrdered
-    Set UnorderedParts = New NotOrdered
-    
-    Sheets.Add After:=Sheets("Inactive Serials")
-    activesheet.name = "Parts Not Ordered"
-    
-    UnorderedParts.SetupNotOrdered
+Private Sub SetupInactiveTab()
+    'Inactive Sheet
+    Call NewReviewSheets.AddNewSheet("Inactive Serials", "Not Scanned")
+    Call NewReviewSheets.CopyHeaders("Serial File", "Inactive Serials")
+    Call NewReviewSheets.CutDeletedCopyInactive
 End Sub
-
-Private Sub MissingPcPriceTab()
-    Dim MissingPcPrice As MissingPrice
-    Set MissingPcPrice = New MissingPrice
-    
-    Sheets.Add After:=Sheets("Parts Not Ordered")
-    activesheet.name = "Missing Pc Price"
-    
-    MissingPcPrice.SetupMissingPcPrice
+Private Sub SetupPartsNotOrderedTab()
+    'Parts Not Ordered
+    Call NewReviewSheets.AddNewSheet("Parts Not Ordered", "Inactive Serials")
+    Call NewReviewSheets.SetupNotOrdered
+End Sub
+Private Sub SetupMissingPcPriceTab()
+    'Missing Piece Price
+    Call NewReviewSheets.AddNewSheet("Missing Pc Price", "Parts Not Ordered")
+    Call NewReviewSheets.SetupMissingPcPrice
 End Sub
 
 Private Sub AddReviewColumns()
