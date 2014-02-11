@@ -2,16 +2,42 @@ VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
 END
-Attribute VB_Name = "AS400Headers"
+Attribute VB_Name = "AS400"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
+Private AS400Labels As SheetSetups
 Private HeadersAS400(0 To 38) As String
 Private HeadersActual(0 To 38) As String
 
-Public Function Convert(sheet_name$)
+Public Sub SetupAS400(sheet_names, sheet_headers)
+    Set AS400Labels = New SheetSetups
+    
+    Call AS400Labels.AdjustSheets(sheet_names)
+    Call AddHeaderValues(sheet_headers)
+    Call FormatHeaders(sheet_headers)
+    Call ResizeAllCells
+End Sub
+Private Sub AddHeaderValues(Headers)
+    Dim x As Byte
+    For x = 0 To UBound(Headers)
+        Range(Cells(1, x + 1), Cells(1, x + 1)).Value = Headers(x)
+    Next x
+End Sub
+Private Sub FormatHeaders(Headers)
+    Range("A2").Formula = "=SUM(65535-COUNTBLANK(B:B))+1"
+    Range("A1:A2").Font.Bold = True
+    Range("A1:A2").Font.ColorIndex = 3
+    Range(Cells(1, 2), Cells(1, UBound(Headers) + 1)).Font.Bold = True
+End Sub
+Private Sub ResizeAllCells()
+    Cells.EntireColumn.AutoFit
+    Range("A1").Select
+End Sub
+
+Public Function ConvertHeaders(sheet_name$)
     Dim TotalColumns As Byte, x As Byte, y As Byte
     
     TotalColumns = Range("IV1").End(xlToLeft).Column
@@ -27,13 +53,11 @@ Public Function Convert(sheet_name$)
         Next y
     Next x
 End Function
-
 Private Sub EvaluateHeader(x As Byte, y As Byte)
     If HeadersAS400(y) = Range(Cells(1, x), Cells(1, x)).Value Then
         Range(Cells(1, x), Cells(1, x)).Value = HeadersActual(y)
     End If
 End Sub
-
 Private Sub HeadersAS400Arr()
 'AS400 header titles
     HeadersAS400(0) = "CONO80"

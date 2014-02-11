@@ -40,8 +40,8 @@ Sub ONELINE()
 End Sub
 
 Private Sub RequestSetup(SheetNames, SheetHeaders)
-    Dim NewRequest As AS400Sheets
-    Set NewRequest = New AS400Sheets
-    Call NewRequest.SetupAS400Sheets(SheetNames, SheetHeaders)
+    Dim NewRequest As AS400
+    Set NewRequest = New AS400
+    Call NewRequest.SetupAS400(SheetNames, SheetHeaders)
 End Sub
 

@@ -83,12 +83,12 @@ End Sub
 
 'ALL SUBS AND FUNCTIONS BELOW ARE CALLED FROM ExecuteProgramReview
 Private Sub AdjustAllSheetHeaders()
-    Dim Headers As AS400Headers
-    Set Headers = New AS400Headers
+    Dim Headers As AS400
+    Set Headers = New AS400
     
-    Call Headers.Convert("Serial File")
-    Call Headers.Convert("Review Data")
-    Call Headers.Convert("Price List")
+    Call Headers.ConvertHeaders("Serial File")
+    Call Headers.ConvertHeaders("Review Data")
+    Call Headers.ConvertHeaders("Price List")
 End Sub
 
 Private Sub NotScannedSerialsTab()
