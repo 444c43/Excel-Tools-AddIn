@@ -11,7 +11,7 @@ Sub SetupSheets()
     
     On Error GoTo DisplayError
     Call ReviewSheets.AdjustSheets(Array("Serial File", "Review Data", "Price List"))
-    Sheets("Serials").Select
+    Sheets("Serial File").Select
     Exit Sub
 
 DisplayError:
