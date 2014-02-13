@@ -131,11 +131,11 @@ Private Sub EvaluateAcctType()
         Case "1 Wk"
             root_formula = "ROUNDUP(SUM((G2/" & ReviewCustomer.ReviewWeeks & ")/E2),0)"
         Case "2 Wk"
-            root_formula = "ROUNDUP(SUM(((G2/" & ReviewCustomer.ReviewWeeks & ")/E2)*2,0)"
+            root_formula = "ROUNDUP(SUM((G2/" & ReviewCustomer.ReviewWeeks & ")/E2)*2,0)"
         Case "3 Wk"
-            root_formula = "ROUNDUP(SUM(((G2/" & ReviewCustomer.ReviewWeeks & ")/E2)*3,0)"
+            root_formula = "ROUNDUP(SUM((G2/" & ReviewCustomer.ReviewWeeks & ")/E2)*3,0)"
         Case "5 Day"
-            root_formula = "ROUNDUP(SUM(((G2/" & ReviewCustomer.ReviewWeeks & ")/E2)/5,0)"
+            root_formula = "ROUNDUP(SUM((G2/" & ReviewCustomer.ReviewWeeks & ")/E2)/5,0)"
     End Select
     ReviewCustomer.Formula = "=IF(" & root_formula & "=1,2,IF(AND(G2=0,H2>2),2," & root_formula & "))"
 End Sub
