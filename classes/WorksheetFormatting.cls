@@ -53,7 +53,9 @@ Private Sub IterateSheets(sheet_name$)
         Cells.EntireColumn.AutoFit
         Range("A1:" & ActiveCell.SpecialCells(xlLastCell).Address).Select
         Call BorderEdges(xlContinuous, xlThin, xlAutomatic)
-        Call BorderInside(xlContinuous, xlThin, xlAutomatic)
+        If ActiveCell.SpecialCells(xlLastCell).Row > 1 Then
+            Call BorderInside(xlContinuous, xlThin, xlAutomatic)
+        End If
         Call SetFirstCell
 End Sub
 Private Sub BorderEdges(Style As String, Wght As String, ColIndex As Variant)
