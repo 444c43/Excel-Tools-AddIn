@@ -53,7 +53,7 @@ Private Sub SetSerialValues()
     inactive_total = WSFunction.CountIf(SerialStatus.EntireColumn, "Inactive")
     missing_price = WSFunction.CountIf(SerialValues.EntireColumn, 0)
     
-    Set SerialValues = Range(SearchRange.Find("Avg Wkly Bin Scans").Address)
+    Set SerialValues = Range(SearchRange.Find("Total Bin Scans").Address)
     weekly_avg = WSFunction.Sum(SerialValues.EntireColumn)
 End Sub
 

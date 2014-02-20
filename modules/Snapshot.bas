@@ -113,7 +113,7 @@ Private Sub Headers()
         
     'sub headers - serial numbers
     Call SetMultipleCellValues( _
-        Array("B6", "B7", "B8", "B10", "B11"), Array("Scanned", "Not Scanned", "Inactive", "Missing Piece Price", "Wkly Bin Scan Avg"))
+        Array("B6", "B7", "B8", "B10", "B11"), Array("Scanned", "Not Scanned", "Inactive", "Missing Piece Price", "Total Scans"))
 
     'sub headers - part numbers
     Call SetMultipleCellValues( _

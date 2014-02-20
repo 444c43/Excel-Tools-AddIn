@@ -154,9 +154,9 @@ End Sub
 Private Sub AddAvgScans(last_row&, review_weeks#)
     With Sheets("Serial File")
         .Columns("I:I").Insert Shift:=xlToRight
-        .Range("I1").Value = "Avg Wkly Bin Scans"
+        .Range("I1").Value = "Total Bin Scans"
         .Columns.NumberFormat = "General"
-        .Range("I2").FormulaR1C1 = "=ROUNDUP(SUM((RC[-2]/RC[-4])/" & review_weeks & "),0)"
+        .Range("I2").FormulaR1C1 = "=ROUNDUP(SUM(RC[-2]/RC[-4]),0)"
         .Range("I2:I" & last_row).FillDown
     End With
 End Sub
