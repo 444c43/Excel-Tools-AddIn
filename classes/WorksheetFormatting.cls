@@ -56,7 +56,19 @@ Private Sub IterateSheets(sheet_name$)
         If ActiveCell.SpecialCells(xlLastCell).Row > 1 Then
             Call BorderInside(xlContinuous, xlThin, xlAutomatic)
         End If
+        Call IgnoreErrors
         Call SetFirstCell
+End Sub
+Private Sub IgnoreErrors()
+Dim cell As Range
+Dim intLoop As Integer
+Dim strEndCell As String
+    strEndCell = activesheet.Range("A1").SpecialCells(xlCellTypeLastCell).Address
+    For Each cell In activesheet.Range("$A$1:" & strEndCell)
+        For intLoop = 1 To 8
+            cell.Errors.item(intLoop).Ignore = True
+         Next
+     Next
 End Sub
 Private Sub BorderEdges(Style As String, Wght As String, ColIndex As Variant)
     Dim BorderObject(3) As Object
