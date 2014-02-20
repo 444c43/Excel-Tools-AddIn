@@ -122,7 +122,7 @@ Private Sub HeadersActualArr()
     HeadersActual(17) = "Station Description"
     HeadersActual(18) = "Part Description"
     HeadersActual(19) = ""
-    HeadersActual(20) = "Mfg Qty"
+    HeadersActual(20) = "Box Qty"
     HeadersActual(21) = "Line Description"
     HeadersActual(22) = "Bin Sys"
     HeadersActual(23) = "Bin Size"
