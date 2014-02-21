@@ -46,15 +46,20 @@ End Sub
 
 Private Sub EvaluateSerialStatus(i%, inactive_last_row%)
     Select Case Sheets("Serial File").Range("W" & i).Value
-    Case "D"
+        Case "D"
+            Sheets("Serial File").Rows(i).Cut
+            Sheets("Inactive Serials").Range("A" & inactive_last_row).Select
+            activesheet.Paste
+        Case "I"
+            Sheets("Serial File").Rows(i).Cut
+            Sheets("Inactive Serials").Range("A" & inactive_last_row).Select
+            activesheet.Paste
+    End Select
+    If Sheets("Serial File").Range("Q" & i).Value = "I" Then
         Sheets("Serial File").Rows(i).Cut
         Sheets("Inactive Serials").Range("A" & inactive_last_row).Select
         activesheet.Paste
-    Case "I"
-        Sheets("Serial File").Rows(i).Copy
-        Sheets("Inactive Serials").Range("A" & inactive_last_row).Select
-        activesheet.Paste
-    End Select
+    End If
 End Sub
 
 'MISSING PRICE

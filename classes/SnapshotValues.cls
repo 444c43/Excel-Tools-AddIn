@@ -50,7 +50,7 @@ Private Sub SetSerialValues()
     ' set values
     scanned_total = WSFunction.CountIf(SerialStatus.EntireColumn, "Scanned")
     not_scanned_total = WSFunction.CountIf(SerialStatus.EntireColumn, "Not Scanned")
-    inactive_total = WSFunction.CountIf(SerialStatus.EntireColumn, "Inactive")
+    inactive_total = Sheets("Inactive Serials").Cells.SpecialCells(xlLastCell).Row - 1
     missing_price = WSFunction.CountIf(SerialValues.EntireColumn, 0)
     
     Set SerialValues = Range(SearchRange.Find("Total Bin Scans").Address)
