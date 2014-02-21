@@ -20,7 +20,7 @@ Sub EntryPoint()
 End Sub
 
 Private Sub InitializeObjects()
-    Set objMyProj = Application.VBE.VBProjects("MacroTools")
+    Set objMyProj = Application.VBE.VBProjects("MacroTools") 'SET TO PROJECT
     DirectoryError = False
 End Sub
 
@@ -36,17 +36,24 @@ Private Sub EvaluateComponents()
     Next
 End Sub
 Private Function IsClassModuleOrForm(component As VBComponent) As Boolean
-    IsClassModuleOrForm = True
+    IsClassModuleOrForm = False
     
     Select Case component.Type
         Case vbext_ct_StdModule
-            Call SetExtensionAndSubDirectory("modules\", ".bas")
+            If SaveModules Then
+                Call SetExtensionAndSubDirectory("modules\", ".bas")
+                IsClassModuleOrForm = True
+            End If
         Case vbext_ct_ClassModule
-            Call SetExtensionAndSubDirectory("classes\", ".cls")
+            If SaveClasses Then
+                Call SetExtensionAndSubDirectory("classes\", ".cls")
+                IsClassModuleOrForm = True
+            End If
         Case vbext_ct_MSForm
-            Call SetExtensionAndSubDirectory("forms\", ".frm")
-        Case Else
-            IsClassModuleOrForm = False
+            If SaveForms Then
+                Call SetExtensionAndSubDirectory("forms\", ".frm")
+                IsClassModuleOrForm = True
+            End If
     End Select
 End Function
 Private Sub SetExtensionAndSubDirectory(sub_directory$, file_extension$)
@@ -56,7 +63,7 @@ End Sub
 Private Sub SaveComponent(component As VBComponent)
     Dim directory$, filename$
     
-    directory = "C:\Users\dl_2\Documents\Backups\GFC Tools\admin tools\" & SubDirectory
+    directory = "C:\Users\dl_2\Documents\Backups\GFC Tools\admin tools\" & SubDirectory 'SET TO PRIMARY DIRECTORY
     filename = component.Name & FileExtension
     
     On Error GoTo Message
