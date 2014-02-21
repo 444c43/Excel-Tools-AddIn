@@ -100,8 +100,6 @@ End Sub
 Private Sub SetupNotScannedTab()
     'NotScannedTab
     Call NewReviewSheets.AddNewSheet("Not Scanned", "Price List")
-    Call NewReviewSheets.CopyHeaders("Serial File", "Not Scanned")
-    'Call NewReviewSheets.CopyPasteNotScanned
 End Sub
 Private Sub SetupInactiveTab()
     'Inactive Sheet
@@ -132,7 +130,13 @@ Private Sub CalculateSerialStatus()
     Set SerialStatus = New SerialCalculations
    
     SerialStatus.CalculateSerials
+    Call CleanUpNotScannedTab
     SerialStatus.MoveSerialStatus
+End Sub
+
+Private Sub CleanUpNotScannedTab()
+    Sheets("Not Scanned").Range("A1:AA1").Value = Sheets("Serial File").Range("A1:AA1").Value
+    Sheets("Not Scanned").Range("F:G,I:K,S:Z").Delete Shift:=xlToLeft
 End Sub
 
 Private Sub RemoveSheets()
