@@ -77,7 +77,7 @@ Private Sub SetMissingSearchHeader(header_text$)
 End Sub
 Private Sub FindMissingPcPrice()
     Dim i%, last_row&, row_num%
-    last_row = Sheets("Review Data").Range("A65535").End(xlUp).Row
+    last_row = Sheets("Serial File").Range("A65535").End(xlUp).Row
     
     For i = 2 To last_row
         If IsLastPart(i) = 1 Then
