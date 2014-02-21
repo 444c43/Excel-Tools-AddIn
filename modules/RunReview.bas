@@ -101,7 +101,7 @@ Private Sub SetupNotScannedTab()
     'NotScannedTab
     Call NewReviewSheets.AddNewSheet("Not Scanned", "Price List")
     Call NewReviewSheets.CopyHeaders("Serial File", "Not Scanned")
-    Call NewReviewSheets.CopyPasteNotScanned
+    'Call NewReviewSheets.CopyPasteNotScanned
 End Sub
 Private Sub SetupInactiveTab()
     'Inactive Sheet
@@ -148,11 +148,3 @@ Private Sub FormatSheets()
     
     Call WorksheetFormat.FormatAllWorksheets(ReviewCustomer.name, ReviewCustomer.AcctNumber, ReviewCustomer.ReviewPeriod)
 End Sub
-
-
-Sub test()
-Range("I2").Formula = "=IF(ROUNDUP(SUM((G2/13)/E2),0)=1,2,IF(AND(ROUNDUP(SUM((G2/13)/E2),0)=0,H2>2),2,ROUNDUP(SUM((G2/13)/E2),0)))"
-
-
-End Sub
-

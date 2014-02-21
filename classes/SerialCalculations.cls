@@ -17,19 +17,19 @@ Sub CalculateSerials()
     For i = last_row To 2 Step -1
         Call UpdateValues(i)
         
-        If CheckIfScanned = False Then
+        If (ShipQty > 0) Then
+            Call AddStatusValue(i, "Scanned")
+        Else
             If NotScanned Then
-                Sheets("Serial File").Range("W" & i).Value = "Not Scanned"
+                Call AddStatusValue(i, "Not Scanned")
+                Call CopyNotScanned(i)
             ElseIf InactiveZero Then
                 Sheets("Serial File").Rows(i).Delete
-                'Sheets("Serial File").Range("W" & i).value = "Inactive Zero Bins"
             ElseIf Inactive Then
-                Sheets("Serial File").Range("W" & i).Value = "Inactive"
+                Call AddStatusValue(i, "Inactive")
             ElseIf ToReview Then
-                Sheets("Serial File").Range("X" & i).Value = "x" 'to review
+                Sheets("Serial File").Range("X" & i).Value = "x"
             End If
-        Else
-            Sheets("Serial File").Range("W" & i).Value = "Scanned"
         End If
         
         If CalculateSalesUnder15(i) Then
@@ -37,6 +37,16 @@ Sub CalculateSerials()
         End If
     Next i
 End Sub
+Private Sub AddStatusValue(i&, status$)
+    Sheets("Serial File").Range("W" & i).Value = status
+End Sub
+Private Sub CopyNotScanned(i&)
+    Sheets("Serial File").Range("A" & i).EntireRow.Copy
+    Sheets("Not Scanned").Range("A" & GetLastRow("Not Scanned")).PasteSpecial Paste:=xlPasteValues
+End Sub
+Private Function GetLastRow%(current_sheet$)
+    GetLastRow = Sheets(current_sheet).Range("A65535").End(xlUp).Row + 1
+End Function
 
 Sub MoveSerialStatus()
     Sheets("Serial File").Columns("W:W").Cut
@@ -57,9 +67,6 @@ Private Sub UpdateValues(i&)
     NoCharge = Sheets("Serial File").Range("Q" & i).Value
 End Sub
 
-Private Function CheckIfScanned() As Boolean
-    CheckIfScanned = (ShipQty > 0)
-End Function
 Private Function NotScanned() As Boolean
     NotScanned = (ShipQty = 0 And NoCharge <> "I" And BinSys > 0)
 End Function

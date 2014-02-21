@@ -23,16 +23,16 @@ Public Sub InstantiateVariables()
 End Sub
 
 'SERIALS NOT SCANNED
-Public Sub CopyPasteNotScanned()
-    Sheets("Review Data").Columns("A:A").TextToColumns Destination:=Range("A1"), DataType:=xlDelimited
-    
-    For i = last_row To 2 Step -1
-        If IsSerialNotScanned(i) Then
-            Sheets("Serial File").Range("A" & i).EntireRow.Copy
-            Sheets("Not Scanned").Range("A" & GetLastRow("Not Scanned")).PasteSpecial Paste:=xlPasteValues
-        End If
-    Next i
-End Sub
+'Public Sub CopyPasteNotScanned()
+'    Sheets("Review Data").Columns("A:A").TextToColumns Destination:=Range("A1"), DataType:=xlDelimited
+'
+'    For i = last_row To 2 Step -1
+'        If IsSerialNotScanned(i) Then
+'            Sheets("Serial File").Range("A" & i).EntireRow.Copy
+'            Sheets("Not Scanned").Range("A" & GetLastRow("Not Scanned")).PasteSpecial Paste:=xlPasteValues
+'        End If
+'    Next i
+'End Sub
 Private Function IsSerialNotScanned(i%) As Boolean
     IsSerialNotScanned = (Application.WorksheetFunction.CountIf(Sheets("Review Data").Range("A:A"), Sheets("Serial File").Range("A" & i).Value) = 0)
 End Function
