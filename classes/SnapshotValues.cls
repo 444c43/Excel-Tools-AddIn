@@ -64,28 +64,23 @@ Private Sub SetPartValues()
     Set ShipQty = Range(SearchRange.Find("Ship Qty").Address)
     
     ordered_parts = 0
-    not_ordered_parts = 0
+    not_ordered_parts = Sheets("Parts Not Ordered").Range("A65535").End(xlUp).Row - 1
    
     For i = 2 To LastRow
-        If CheckForLastListItem(i) = 1 Then
-            If HasShipQty(i) Then
-                ordered_parts = ordered_parts + 1
-            Else
-                not_ordered_parts = not_ordered_parts + 1
-            End If
+        If CheckForLastListItem(i) = 1 And ScannedStatus(i) Then
+            ordered_parts = ordered_parts + 1
         End If
     Next i
 End Sub
 Private Function CheckForLastListItem(i%)
-    CheckForLastListItem = WSFunction.CountIf(CustomerPart.Range(Cells(i, 1), Cells(LastRow, 1)), CustomerPart.Cells(i, 1))
+    CustomerPart.Range(Cells(i, 1), Cells(LastRow, 1)).Select
+    CustomerPart.Range(Cells(i, 1), Cells(i, 1)).Select
+    CheckForLastListItem = WSFunction.CountIf(CustomerPart.Range(Cells(i, 1), Cells(LastRow, 1)), _
+        CustomerPart.Range(Cells(i, 1), Cells(i, 1)))
 End Function
-
-Private Function HasShipQty(i%) As Boolean
-    If WSFunction.SumIf(CustomerPart.EntireColumn, CustomerPart.Cells(i, 1), ShipQty.EntireColumn) = 0 Then
-        HasShipQty = False
-        Exit Function
-    End If
-    HasShipQty = True
+Private Function ScannedStatus(i%) As Boolean
+    Sheets("0024116").Range("A" & i).Select
+    ScannedStatus = (Sheets("0024116").Range("A" & i).Value = "Scanned")
 End Function
 
 Private Sub SetLoopValues()

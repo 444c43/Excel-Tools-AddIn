@@ -4,6 +4,7 @@ Public ReviewValidations As New Validations
 Public UserMessage As New Message
 Public ReviewCustomer As Customer
 Private NewReviewSheets As ReviewSheets
+Private CustomerParts As UniquePartNums
 
 Sub SetupSheets()
     Dim ReviewSheets As SheetSetups
@@ -37,6 +38,7 @@ Private Sub Constructor()
     Set ReviewValidations = New Validations
     Set UserMessage = New Message
     Set ReviewCustomer = New Customer
+    Set CustomerParts = New UniquePartNums
 End Sub
 Private Sub InitializeObjects()
     Call ReviewValidations.SetupObject("LIST80", "GFCCS1")
@@ -58,6 +60,7 @@ Private Sub ExecuteProgramReview()
     frmReview.Show
     'EXECUTE PROGRAM HERE ALL VALIDATIONS PASS
     Call RemoveZeroShipAndZeroBinQty
+    Call CreatePartsNotOrderedList
     Call AdjustAllSheetHeaders
     Call AddNewTabs
     Call AddReviewColumns
@@ -92,6 +95,7 @@ End Sub
 Private Sub AddNewTabs()
     Set NewReviewSheets = New ReviewSheets
     Call NewReviewSheets.InstantiateVariables
+    
     Call SetupNotScannedTab
     Call SetupInactiveTab
     Call SetupPartsNotOrderedTab
@@ -107,10 +111,21 @@ Private Sub SetupInactiveTab()
     Call NewReviewSheets.CopyHeaders("Serial File", "Inactive Serials")
     Call NewReviewSheets.CutDeletedCopyInactive
 End Sub
+Private Sub CreatePartsNotOrderedList()
+    Call CustomerParts.Initialize("Serial File", "GFCCP#", "Review Data", "GFCCP#")
+    Call CustomerParts.IterateAndAddUnique
+    Call CustomerParts.SeparateNotOrdered
+End Sub
 Private Sub SetupPartsNotOrderedTab()
-    'Parts Not Ordered
+    Dim i%
+    
     Call NewReviewSheets.AddNewSheet("Parts Not Ordered", "Inactive Serials")
-    Call NewReviewSheets.SetupNotOrdered
+    
+    For i = 1 To CustomerParts.NotOrdered.count
+        Sheets("Parts Not Ordered").Range("A" & i + 1).Value = CustomerParts.NotOrdered(i)
+    Next i
+    
+    Call NewReviewSheets.AddGFCPartNumbers
 End Sub
 Private Sub SetupMissingPcPriceTab()
     'Missing Piece Price

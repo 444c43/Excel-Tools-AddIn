@@ -22,17 +22,6 @@ Public Sub InstantiateVariables()
     last_row = Sheets("Serial File").Range("A65535").End(xlUp).Row
 End Sub
 
-'SERIALS NOT SCANNED
-'Public Sub CopyPasteNotScanned()
-'    Sheets("Review Data").Columns("A:A").TextToColumns Destination:=Range("A1"), DataType:=xlDelimited
-'
-'    For i = last_row To 2 Step -1
-'        If IsSerialNotScanned(i) Then
-'            Sheets("Serial File").Range("A" & i).EntireRow.Copy
-'            Sheets("Not Scanned").Range("A" & GetLastRow("Not Scanned")).PasteSpecial Paste:=xlPasteValues
-'        End If
-'    Next i
-'End Sub
 Private Function IsSerialNotScanned(i%) As Boolean
     IsSerialNotScanned = (Application.WorksheetFunction.CountIf(Sheets("Review Data").Range("A:A"), Sheets("Serial File").Range("A" & i).Value) = 0)
 End Function
@@ -102,14 +91,21 @@ Private Function EvaluatePcPrice%(i%)
     EvaluatePcPrice = Application.WorksheetFunction.CountIf(PriceCompare.EntireColumn, GFCPart.Cells(i, 1))
 End Function
 
-
 'PARTS NOT ORDERED
-Public Sub SetupNotOrdered()
-    Call SetSearchHeader("Customer Part #")
+Public Sub AddGFCPartNumbers()
+    Dim last_row&
+    
+    last_row = Sheets("Serial File").Range("A65535").End(xlUp).Row
+    
     Call AddHeaders("Parts Not Ordered", "Customer Part #", "GFC Part #")
-    Call FindNotOrderedParts
-    Call AddGFCPartNumbers
+    
+    Sheets("Parts Not Ordered").Range("B2").FormulaR1C1 = "=VLOOKUP(RC[-1],'Serial File'!R2C5:R" & last_row & "C6,2,FALSE)"
+    
+    Sheets("Parts Not Ordered").Range("B2:B" & GetLastRow("Parts Not Ordered") - 1).FillDown
+    Sheets("Parts Not Ordered").Range("B2:B" & GetLastRow("Parts Not Ordered") - 1).Copy
+    Sheets("Parts Not Ordered").Range("B2").PasteSpecial Paste:=xlPasteValues
 End Sub
+
 Private Sub SetSearchHeader(header_text$)
     LastColumn = Sheets("Serial File").Range("IV1").End(xlToLeft).Column
     Sheets("Serial File").Select
@@ -120,31 +116,6 @@ End Sub
 Private Sub AddHeaders(sheet_name$, CellA1$, CellB1$)
     Sheets(sheet_name).Range("A1").Value = CellA1$
     Sheets(sheet_name).Range("B1").Value = CellB1$
-End Sub
-Private Sub FindNotOrderedParts()
-    Dim i%, last_row&
-    
-    last_row = Sheets("Serial File").Range("A65535").End(xlUp).Row
-    
-    For i = 2 To last_row
-        'if countif(search SF column for item) = 1 and sumif( review data column for item) = 0 then
-        If IsLastItemInColumn(i) = 1 Then
-            If ReturnReviewSum(CustomerPart.Cells(i, 1)) = 0 Then
-                Sheets("Parts Not Ordered").Range("A" & GetLastRow("Parts Not Ordered")) = CustomerPart.Cells(i, 1)
-            End If
-        End If
-    Next i
-End Sub
-Private Sub AddGFCPartNumbers()
-    Dim last_row&
-    
-    last_row = Sheets("Serial File").Range("A65535").End(xlUp).Row
-    
-    Sheets("Parts Not Ordered").Range("B2").FormulaR1C1 = "=VLOOKUP(RC[-1],'Serial File'!R2C5:R" & last_row & "C6,2,FALSE)"
-    
-    Sheets("Parts Not Ordered").Range("B2:B" & GetLastRow("Parts Not Ordered") - 1).FillDown
-    Sheets("Parts Not Ordered").Range("B2:B" & GetLastRow("Parts Not Ordered") - 1).Copy
-    Sheets("Parts Not Ordered").Range("B2").PasteSpecial Paste:=xlPasteValues
 End Sub
 Private Function IsLastItemInColumn%(row_num%)
     IsLastItemInColumn = Application.WorksheetFunction.CountIf(CustomerPart.EntireColumn, _
