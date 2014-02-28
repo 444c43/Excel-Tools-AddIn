@@ -187,7 +187,6 @@ Private Sub SerialValues()
     
     SnapshotWS.Range("C9").Formula = "=SUM(C6:C8)" 'sum formula for serials
     SnapshotWS.Range("C9:E9").FillRight
-'    SnapshotWS.Range("E9").Formula = "=SUM(E6:E8)" 'sum formula for serials
 End Sub
 
 Private Sub PartValues()
@@ -196,8 +195,6 @@ Private Sub PartValues()
 
     SnapshotWS.Range("C28").Formula = "=SUM(C26:C27)" 'sum for ordered
     SnapshotWS.Range("C28:E28").FillRight
-'    SnapshotWS.Range("D28").Formula = "=SUM(D26:D27)" 'sum for ordered
-'    SnapshotWS.Range("E28").Formula = "=SUM(E26:E27)" 'sum for ordered
 End Sub
 Private Sub LoopValues()
     

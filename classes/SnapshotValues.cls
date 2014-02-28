@@ -51,56 +51,62 @@ Private Sub SetSerialValues()
     scanned_total = WSFunction.CountIf(SerialStatus.EntireColumn, "Scanned")
     not_scanned_total = WSFunction.CountIf(SerialStatus.EntireColumn, "Not Scanned")
     inactive_total = Sheets("Inactive Serials").Cells.SpecialCells(xlLastCell).Row - 1
-    missing_price = WSFunction.CountIf(SerialValues.EntireColumn, 0)
+    missing_price = Sheets("Missing Pc Price").Cells.SpecialCells(xlLastCell).Row - 1
     
     Set SerialValues = Range(SearchRange.Find("Total Bin Scans").Address)
     weekly_avg = WSFunction.Sum(SerialValues.EntireColumn)
 End Sub
 
 Private Sub SetPartValues()
-    Dim i%
+    Dim passed_value$, i%, ordered_parts_list As Collection
     
     Set CustomerPart = Range(SearchRange.Find("Customer Part #").Address)
     Set ShipQty = Range(SearchRange.Find("Ship Qty").Address)
+    Set ordered_parts_list = New Collection
     
     ordered_parts = 0
     not_ordered_parts = Sheets("Parts Not Ordered").Range("A65535").End(xlUp).Row - 1
    
     For i = 2 To LastRow
-        If CheckForLastListItem(i) = 1 And ScannedStatus(i) Then
-            ordered_parts = ordered_parts + 1
+        passed_value = Range("D" & i).Value
+        If CollectionHasItem(ordered_parts_list, passed_value) = False And ScannedStatus(i) Then
+            ordered_parts_list.Add passed_value
         End If
     Next i
+    ordered_parts = ordered_parts_list.count
 End Sub
-Private Function CheckForLastListItem(i%)
-    CustomerPart.Range(Cells(i, 1), Cells(LastRow, 1)).Select
-    CustomerPart.Range(Cells(i, 1), Cells(i, 1)).Select
-    CheckForLastListItem = WSFunction.CountIf(CustomerPart.Range(Cells(i, 1), Cells(LastRow, 1)), _
-        CustomerPart.Range(Cells(i, 1), Cells(i, 1)))
+Private Function CollectionHasItem(ordered_parts_list, passed_value$) As Boolean
+    Dim current_item As Variant
+    CollectionHasItem = False
+    For Each current_item In ordered_parts_list
+        If passed_value = current_item Then
+            CollectionHasItem = True
+            Exit For
+        End If
+    Next current_item
 End Function
 Private Function ScannedStatus(i%) As Boolean
-    Sheets("0024116").Range("A" & i).Select
-    ScannedStatus = (Sheets("0024116").Range("A" & i).Value = "Scanned")
+    Range("A" & i).Select
+    ScannedStatus = (Range("A" & i).Value = "Scanned")
 End Function
 
 Private Sub SetLoopValues()
-Dim i%
+    Dim i%
+    
+    Set BinQty = Range(SearchRange.Find("Bin Qty").Address)
+    Set BinSys = Range(SearchRange.Find("Bin Sys").Address)
+    Set PcPrice = Range(SearchRange.Find("Pc Price").Address)
+    Set NoCharge = Range(SearchRange.Find("No Charge").Address)
+    
+    For i = 2 To LastRow
+        If ShipQty.Cells(i, 1) > 0 Then
+            sales_value = sales_value + GetSalesValue(i)
+        ElseIf ShipQty.Cells(i, 1) = 0 Then
+            not_scanned_value = not_scanned_value + GetBinSysValue(i)
+        End If
+    Next i
 
-Set BinQty = Range(SearchRange.Find("Bin Qty").Address)
-Set BinSys = Range(SearchRange.Find("Bin Sys").Address)
-Set PcPrice = Range(SearchRange.Find("Pc Price").Address)
-Set NoCharge = Range(SearchRange.Find("No Charge").Address)
-
-For i = 2 To LastRow
-    If ShipQty.Cells(i, 1) > 0 Then
-        sales_value = sales_value + GetSalesValue(i)
-    ElseIf NoCharge.Cells(i, 1) = "I" Then
-        inactive_value = inactive_value + GetBinSysValue(i)
-    Else
-        not_scanned_value = not_scanned_value + GetBinSysValue(i)
-    End If
-Next i
-
+    inactive_value = Application.WorksheetFunction.Sum(Sheets("Inactive Serials").Columns("AC:AC"))
 End Sub
 
 Private Function GetSalesValue@(i%)
