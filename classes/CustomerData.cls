@@ -180,8 +180,7 @@ Private Sub SetupPriceCode()
     PriceCode.Add "130"
     PriceCode.Add "683"
     PriceCode.Add "042"
-    'DANA LUGOFF INCORRECT
-    PriceCode.Add "000"
+    PriceCode.Add "058"
     PriceCode.Add "438"
     PriceCode.Add "438"
     PriceCode.Add "438"
