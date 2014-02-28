@@ -76,8 +76,8 @@ Private Sub AddFormulas(review_weeks#, review_formula$)
     With Sheets("Serial File")
         .Range("F2").FormulaR1C1 = "=ROUNDUP((RC[1]/" & review_weeks & "),0)"
         .Range("G2").FormulaR1C1 = "=IF(ISERROR(VLOOKUP(RC[-6],'Review Data'!R2C1:R" & Sheets("Review Data").Range("A36000").End(xlUp).Row & "C24,24,False))=TRUE,0,VLOOKUP(RC[-6],'Review Data'!R2C1:R" & Sheets("Review Data").Range("A36000").End(xlUp).Row & "C24,24,False))"
-        .Range("I2").Formula = review_formula
-        .Range("J2").FormulaR1C1 = "=SUM(RC[-1]-RC[-2])"
+        .Range("I2").FormulaR1C1 = "=SUM(RC[1],RC[-1])" 'SUM(L2,I2)
+        .Range("J2").Formula = review_formula
         .Range("R2").FormulaR1C1 = "=VLOOKUP(RC[-14],'Price List'!R2C3:R" & Sheets("Price List").Range("A36000").End(xlUp).Row & "C6,4,False)"
         .Range("S2").FormulaR1C1 = "=SUM((RC[-1]*RC[-14])*RC[-11])"
         .Range("T2").FormulaR1C1 = "=SUM((RC[-2]*RC[-15])*RC[-10])"

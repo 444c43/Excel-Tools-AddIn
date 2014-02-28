@@ -137,7 +137,7 @@ Private Sub EvaluateAcctType()
         Case "5 Day"
             root_formula = "ROUNDUP(SUM((G2/" & ReviewCustomer.ReviewWeeks & ")/E2)/5,0)"
     End Select
-    ReviewCustomer.Formula = "=IF(" & root_formula & "=1,2,IF(AND(G2=0,H2>2),2," & root_formula & "))"
+    ReviewCustomer.Formula = "=IF(G2=0,SUM(2-H2),SUM((H2-IF(" & root_formula & "<2,2," & root_formula & "))*-1))"
 End Sub
 
 Private Function CalculateMonths%()
