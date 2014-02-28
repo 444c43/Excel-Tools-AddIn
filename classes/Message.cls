@@ -10,9 +10,10 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Public Function DisplayErrors(error_list As Collection)
-    Dim item
-    Debug.Print "The following problems need corrected:"
+    Dim item As Variant, UserMsg$
+    UserMsg = "The following problems need corrected:"
     For Each item In error_list
-        Debug.Print CStr(item)
+        UserMsg = UserMsg & vbNewLine & CStr(item)
     Next item
+    Call MsgBox(UserMsg)
 End Function
