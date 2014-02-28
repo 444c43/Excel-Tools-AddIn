@@ -53,14 +53,6 @@ Sub MoveSerialStatus()
     Sheets("Serial File").Columns("A:A").Insert Shift:=xlToRight
 End Sub
 
-'Private Sub SetSearchHeader(header_text$)
-'    LastColumn = Sheets("Serial File").Range("IV1").End(xlToLeft).Column
-'    Sheets("Serial File").Select
-'
-'    Set SearchRange = Sheets("Serial File").Range(Cells(1, 1), Cells(1, LastColumn))
-'    Set CustomerPart = Range(SearchRange.Find(header_text).Address)
-'End Sub
-
 Private Sub UpdateValues(i&)
     ShipQty = Sheets("Serial File").Range("G" & i).Value
     BinSys = Sheets("Serial File").Range("H" & i).Value

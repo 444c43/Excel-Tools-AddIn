@@ -44,8 +44,13 @@ Private Sub AllWorksheets()
     Dim current_sheet As Worksheet
     
     For Each current_sheet In ActiveWorkbook.Sheets
+        Call ResetLastCell(current_sheet)
         Call IterateSheets(current_sheet.name)
     Next current_sheet
+End Sub
+Sub ResetLastCell(sheet_name As Worksheet)
+   Dim x As Long
+   x = sheet_name.UsedRange.Rows.count
 End Sub
 Private Sub IterateSheets(sheet_name$)
         Sheets(sheet_name).Select
