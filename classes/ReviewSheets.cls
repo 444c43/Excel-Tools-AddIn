@@ -31,6 +31,9 @@ Public Sub CutDeletedCopyInactive()
     For i = last_row To 2 Step -1
         Call EvaluateSerialStatus(i, GetLastRow("Inactive Serials"))
     Next i
+    Call AddPcPrice
+    Call FillDownCopyAndPaste
+    Call RemoveNA
 End Sub
 
 Private Sub EvaluateSerialStatus(i%, inactive_last_row%)
@@ -49,6 +52,29 @@ Private Sub EvaluateSerialStatus(i%, inactive_last_row%)
         Sheets("Inactive Serials").Range("A" & inactive_last_row).Select
         activesheet.Paste
     End If
+End Sub
+
+Private Sub AddPcPrice()
+    With Sheets("Inactive Serials")
+        .Range("AB1").Value = "Pc Price"
+        .Range("AB2").FormulaR1C1 = "=VLOOKUP(RC[-22],'Price List'!R2C3:R" & GetLastRow("Price List") & "C6,4,False)"
+        .Range("AC1").Value = "Loop Value"
+        .Range("AC2").FormulaR1C1 = "=SUM(RC[-1]*RC[-14]*RC[-22])"
+    End With
+End Sub
+
+Private Sub FillDownCopyAndPaste()
+    With Sheets("Inactive Serials")
+        .Range("AB2:AC" & GetLastRow("Inactive Serials")).FillDown
+        .Columns("AB:AC").Copy
+        .Range("AB1").PasteSpecial Paste:=xlPasteValues
+    End With
+End Sub
+
+Private Sub RemoveNA()
+    Sheets("Inactive Serials").Columns("AB:AC").Replace What:="#N/A", Replacement:="", LookAt:=xlPart, _
+        SearchOrder:=xlByRows, MatchCase:=False, SearchFormat:=False, _
+        ReplaceFormat:=False
 End Sub
 
 'MISSING PRICE
@@ -92,20 +118,47 @@ Private Function EvaluatePcPrice%(i%)
 End Function
 
 'PARTS NOT ORDERED
-Public Sub AddGFCPartNumbers()
+Public Sub SetupPartsNotOrdered(not_ordered As Collection)
     Dim last_row&
     
     last_row = Sheets("Serial File").Range("A65535").End(xlUp).Row
     
     Call AddHeaders("Parts Not Ordered", "Customer Part #", "GFC Part #")
-    
-    Sheets("Parts Not Ordered").Range("B2").FormulaR1C1 = "=VLOOKUP(RC[-1],'Serial File'!R2C5:R" & last_row & "C6,2,FALSE)"
-    
+    Call AddCustomerPartNumbers(not_ordered)
+    Call AddGFCPartNumbers
+    Call TextToColumns
+    Call CheckForErrors
+    Call CopyPaste
+End Sub
+Private Sub AddCustomerPartNumbers(not_ordered As Collection)
+    Dim x%
+    For x = 1 To not_ordered.count
+        Sheets("Parts Not Ordered").Range("A" & x + 1).Value = not_ordered(x)
+    Next x
+End Sub
+Private Sub AddGFCPartNumbers()
+    Sheets("Parts Not Ordered").Range("B2").FormulaR1C1 = "=VLOOKUP(RC[-1],'Serial File'!R2C4:R" & last_row & "C5,2,FALSE)"
     Sheets("Parts Not Ordered").Range("B2:B" & GetLastRow("Parts Not Ordered") - 1).FillDown
+End Sub
+Private Sub TextToColumns()
+    Sheets("Inactive Serials").Columns("E:E").TextToColumns Destination:=Range("E1"), DataType:=xlDelimited, _
+        TextQualifier:=xlDoubleQuote, ConsecutiveDelimiter:=False, Tab:=False, _
+        Semicolon:=False, Comma:=False, Space:=False, Other:=False, FieldInfo _
+        :=Array(1, 1), TrailingMinusNumbers:=True
+End Sub
+Private Sub CheckForErrors()
+    Dim x%
+    For x = 2 To GetLastRow("Parts Not Ordered") - 1
+        If IsError(Sheets("Parts Not Ordered").Range("B" & x).Value) Then
+            Sheets("Parts Not Ordered").Range("B" & x).FormulaR1C1 = _
+                "=VLOOKUP(RC[-1],'Inactive Serials'!R2C5:R" & GetLastRow("Inactive Serials") & "C6,2,FALSE)"
+        End If
+    Next x
+End Sub
+Private Sub CopyPaste()
     Sheets("Parts Not Ordered").Range("B2:B" & GetLastRow("Parts Not Ordered") - 1).Copy
     Sheets("Parts Not Ordered").Range("B2").PasteSpecial Paste:=xlPasteValues
 End Sub
-
 Private Sub SetSearchHeader(header_text$)
     LastColumn = Sheets("Serial File").Range("IV1").End(xlToLeft).Column
     Sheets("Serial File").Select
