@@ -25,7 +25,8 @@ Sub SFUPDATE()
     SheetNames = Array("SFUPDATE " & Calculations.DDMMMYY(Day(Now)))
     SheetHeaders = Array("SFUPDATE", "Serial #", "Customer #", "Ship To", "Plant Code", "Customer Part Number", "GFC Part Number", _
         "Card Qty", "Pkg Type", "Station Number", "Station Description", "Box Qty", "Line Description", "Bin Sys", "Bin Size", _
-        "NO Charge SN", "Customer PO", "Country of Origin", "Revision Level", "Comment # 3", "Future Area", "Skipped?")
+        "NO Charge SN", "Customer PO", "Country of Origin", "Revision Level", "Comment # 3", "Future Area", "Serial Number Status", _
+        "Skipped?")
     Call RequestSetup(SheetNames, SheetHeaders)
 End Sub
 Sub STAND1X3()
