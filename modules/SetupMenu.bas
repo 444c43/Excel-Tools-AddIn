@@ -10,6 +10,7 @@ Public Sub CreateToolbarMenu()
     CreateReviewSubMenu
     CreateSnapshotSubMenu
     CreateUniqueToolsSubMenu
+    CreateSFEitSubMenu
     CreateLblPrintSubMenu
     CreateBarCoderSubMenu
 End Sub
@@ -31,12 +32,17 @@ Private Sub CreateSnapshotSubMenu()
         Array(3524, 284, 106, 1679, 3998), _
         Array("Snapshot.Run", "MenuActions.SaveSnapshot", "MenuActions.ImportSnapshot", "MenuActions.ExportSnapshot", ""))
 End Sub
+Private Sub CreateSFEitSubMenu()
+    Call NewMenu.AddSubMenu("SF Editing", _
+        Array("SF BUILD", "SF UPDATE"), _
+        Array(1399, 1396), _
+        Array("AS400Labels.SFBUILD", "AS400Labels.SFUPDATE"))
+End Sub
 Private Sub CreateLblPrintSubMenu()
-    Call NewMenu.AddSubMenu("AS400 Labels", _
-        Array("3RDPARTY", "SF BUILD", "HARRYO2Z", "SF UPDATE", "STAND1X3", "ONELINE"), _
-        Array(509, 509, 509, 509, 509, 509), _
-        Array("AS400Labels.THIRDPARTY", "AS400Labels.SFBUILD", "AS400Labels.HARRYO2Z", _
-            "AS400Labels.SFUPDATE", "AS400Labels.STAND1X3", "AS400Labels.ONELINE"))
+    Call NewMenu.AddSubMenu("AS400 Lbl Printing", _
+        Array("3RDPARTY", "HARRYO2Z", "ONELINE", "STAND1X3"), _
+        Array(509, 509, 509, 509), _
+        Array("AS400Labels.THIRDPARTY", "AS400Labels.HARRYO2Z", "AS400Labels.ONELINE", "AS400Labels.STAND1X3"))
 End Sub
 Private Sub CreateUniqueToolsSubMenu()
     Call NewMenu.AddSubMenu("Unique Tools", _
