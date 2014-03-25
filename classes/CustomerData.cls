@@ -64,6 +64,7 @@ Private Sub SetupNames()
     CustomerNames.Add "Meritor - Maxton"
     CustomerNames.Add "Square D Seneca"
     CustomerNames.Add "Stryker"
+    CustomerNames.Add "Hendrickson"
 End Sub
 
 Private Sub SetupNumbers()
@@ -91,12 +92,18 @@ Private Sub SetupNumbers()
     CustomerNumbers.Add "0076266"
     CustomerNumbers.Add "0081958"
     CustomerNumbers.Add "0084055"
+    CustomerNumbers.Add "0048485"
 End Sub
 
 Private Sub SetupCustomerDeliveryFrequency()
     CustomerDeliveryFrequency.Add "Daily"
+    CustomerDeliveryFrequency.Add "Weekly"
+    CustomerDeliveryFrequency.Add "Weekly"
+    CustomerDeliveryFrequency.Add "Weekly"
     CustomerDeliveryFrequency.Add "Daily"
+    CustomerDeliveryFrequency.Add "Weekly"
     CustomerDeliveryFrequency.Add "Daily"
+    CustomerDeliveryFrequency.Add "Weekly"
     CustomerDeliveryFrequency.Add "Daily"
     CustomerDeliveryFrequency.Add "Daily"
     CustomerDeliveryFrequency.Add "Daily"
@@ -105,18 +112,14 @@ Private Sub SetupCustomerDeliveryFrequency()
     CustomerDeliveryFrequency.Add "Daily"
     CustomerDeliveryFrequency.Add "Daily"
     CustomerDeliveryFrequency.Add "Daily"
+    CustomerDeliveryFrequency.Add "Bi-Wkly"
     CustomerDeliveryFrequency.Add "Daily"
-    CustomerDeliveryFrequency.Add "Daily"
-    CustomerDeliveryFrequency.Add "Daily"
-    CustomerDeliveryFrequency.Add "Daily"
-    CustomerDeliveryFrequency.Add "Daily"
-    CustomerDeliveryFrequency.Add "Daily"
-    CustomerDeliveryFrequency.Add "Daily"
-    CustomerDeliveryFrequency.Add "4x/Wk"
-    CustomerDeliveryFrequency.Add "4x/Wk"
+    CustomerDeliveryFrequency.Add "3x/Wk"
+    CustomerDeliveryFrequency.Add "3x/Wk"
     CustomerDeliveryFrequency.Add "Daily"
     CustomerDeliveryFrequency.Add "Daily"
     CustomerDeliveryFrequency.Add "Weekly"
+    CustomerDeliveryFrequency.Add "Daily"
     CustomerDeliveryFrequency.Add "Daily"
 End Sub
 Private Sub SetupShippingWHSE()
@@ -144,6 +147,7 @@ Private Sub SetupShippingWHSE()
     ShippingWHSE.Add "2"
     ShippingWHSE.Add "2"
     ShippingWHSE.Add "44"
+    ShippingWHSE.Add "15"
 End Sub
 Private Sub SetupProgramType()
     ProgramType.Add "1 Wk"
@@ -170,6 +174,7 @@ Private Sub SetupProgramType()
     ProgramType.Add "1 Wk"
     ProgramType.Add "3 Wk"
     ProgramType.Add "1 Wk"
+    ProgramType.Add "5 Day"
 End Sub
 
 Private Sub SetupPriceCode()
@@ -197,5 +202,6 @@ Private Sub SetupPriceCode()
     PriceCode.Add "189"
     PriceCode.Add "889"
     PriceCode.Add "478"
+    PriceCode.Add "299"
 End Sub
 
