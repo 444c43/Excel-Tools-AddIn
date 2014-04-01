@@ -42,7 +42,7 @@ Private Sub SaveSnapshotData(filename$)
     Set Snapshot = Worksheets("Snapshot")
     'CHANGE THE FILE LOCATION
     'SaveToFile = "C:\Users\dl_2\Desktop\" & filename & ".txt"
-    SaveToFile = "T:\Repository\Program Management\Z-Review Data" & filename & ".txt"
+    SaveToFile = "T:\Repository\Program Management\Z-Review Data\" & filename & ".txt"
     Close #1
     Open SaveToFile For Output As #1
         'current serials
