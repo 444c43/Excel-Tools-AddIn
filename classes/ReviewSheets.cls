@@ -32,7 +32,9 @@ Public Sub CutDeletedCopyInactive()
         Call EvaluateSerialStatus(i, GetLastRow("Inactive Serials"))
     Next i
     Call AddPcPrice
-    Call FillDownCopyAndPaste
+    Call FillDown
+    Call TextToColumns("Inactive Serials", "O")
+    Call CopyAndPaste
     Call RemoveNA
 End Sub
 
@@ -63,9 +65,13 @@ Private Sub AddPcPrice()
     End With
 End Sub
 
-Private Sub FillDownCopyAndPaste()
+Private Sub FillDown()
     With Sheets("Inactive Serials")
         .Range("AB2:AC" & GetLastRow("Inactive Serials")).FillDown
+    End With
+End Sub
+Private Sub CopyAndPaste()
+    With Sheets("Inactive Serials")
         .Columns("AB:AC").Copy
         .Range("AB1").PasteSpecial Paste:=xlPasteValues
     End With
@@ -126,7 +132,7 @@ Public Sub SetupPartsNotOrdered(not_ordered As Collection)
     Call AddHeaders("Parts Not Ordered", "Customer Part #", "GFC Part #")
     Call AddCustomerPartNumbers(not_ordered)
     Call AddGFCPartNumbers
-    Call TextToColumns
+    Call TextToColumns("Inactive Serials", "E")
     Call CheckForErrors
     Call CopyPaste
 End Sub
@@ -139,12 +145,6 @@ End Sub
 Private Sub AddGFCPartNumbers()
     Sheets("Parts Not Ordered").Range("B2").FormulaR1C1 = "=VLOOKUP(RC[-1],'Serial File'!R2C4:R" & last_row & "C5,2,FALSE)"
     Sheets("Parts Not Ordered").Range("B2:B" & GetLastRow("Parts Not Ordered") - 1).FillDown
-End Sub
-Private Sub TextToColumns()
-    Sheets("Inactive Serials").Columns("E:E").TextToColumns Destination:=Range("E1"), DataType:=xlDelimited, _
-        TextQualifier:=xlDoubleQuote, ConsecutiveDelimiter:=False, Tab:=False, _
-        Semicolon:=False, Comma:=False, Space:=False, Other:=False, FieldInfo _
-        :=Array(1, 1), TrailingMinusNumbers:=True
 End Sub
 Private Sub CheckForErrors()
     Dim x%
@@ -182,6 +182,9 @@ End Function
 'SHARED PUBLIC SUBS
 Public Sub CopyHeaders(from_sheet_name$, to_sheet_name$)
     Sheets(to_sheet_name).Range("A1:AA1").Value = Sheets(from_sheet_name).Range("A1:AA1").Value
+End Sub
+Private Sub TextToColumns(sheet_name As String, col As String)
+    Sheets(sheet_name).Columns(col & ":" & col).TextToColumns Destination:=Range(col & "1"), DataType:=xlDelimited
 End Sub
 
 'SHARED PRIVATE SUBS
