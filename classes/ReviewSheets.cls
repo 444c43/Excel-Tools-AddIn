@@ -32,9 +32,7 @@ Public Sub CutDeletedCopyInactive()
         Call EvaluateSerialStatus(i, GetLastRow("Inactive Serials"))
     Next i
     Call AddPcPrice
-    Call FillDown
-    Call TextToColumns("Inactive Serials", "O")
-    Call CopyAndPaste
+    Call FillDownCopyAndPaste
     Call RemoveNA
 End Sub
 
@@ -65,13 +63,9 @@ Private Sub AddPcPrice()
     End With
 End Sub
 
-Private Sub FillDown()
+Private Sub FillDownCopyAndPaste()
     With Sheets("Inactive Serials")
         .Range("AB2:AC" & GetLastRow("Inactive Serials")).FillDown
-    End With
-End Sub
-Private Sub CopyAndPaste()
-    With Sheets("Inactive Serials")
         .Columns("AB:AC").Copy
         .Range("AB1").PasteSpecial Paste:=xlPasteValues
     End With
@@ -132,19 +126,30 @@ Public Sub SetupPartsNotOrdered(not_ordered As Collection)
     Call AddHeaders("Parts Not Ordered", "Customer Part #", "GFC Part #")
     Call AddCustomerPartNumbers(not_ordered)
     Call AddGFCPartNumbers
-    Call TextToColumns("Inactive Serials", "E")
+    Call TextToColumns
     Call CheckForErrors
     Call CopyPaste
 End Sub
 Private Sub AddCustomerPartNumbers(not_ordered As Collection)
     Dim x%
     For x = 1 To not_ordered.count
-        Sheets("Parts Not Ordered").Range("A" & x + 1).Value = not_ordered(x)
+        If (Sheets.Application.WorksheetFunction.CountIf(Sheets("Serial File").Range("D:D"), not_ordered(x)) = 0) Then
+            Sheets("Parts Not Ordered").Range("A" & LastPNOCell()).Value = not_ordered(x)
+        End If
     Next x
 End Sub
+Private Function LastPNOCell() As Integer
+    LastPNOCell = Sheets("Parts Not Ordered").Range("A65535").End(xlUp).Row + 1
+End Function
 Private Sub AddGFCPartNumbers()
     Sheets("Parts Not Ordered").Range("B2").FormulaR1C1 = "=VLOOKUP(RC[-1],'Serial File'!R2C4:R" & last_row & "C5,2,FALSE)"
     Sheets("Parts Not Ordered").Range("B2:B" & GetLastRow("Parts Not Ordered") - 1).FillDown
+End Sub
+Private Sub TextToColumns()
+    Sheets("Inactive Serials").Columns("E:E").TextToColumns Destination:=Range("E1"), DataType:=xlDelimited, _
+        TextQualifier:=xlDoubleQuote, ConsecutiveDelimiter:=False, Tab:=False, _
+        Semicolon:=False, Comma:=False, Space:=False, Other:=False, FieldInfo _
+        :=Array(1, 1), TrailingMinusNumbers:=True
 End Sub
 Private Sub CheckForErrors()
     Dim x%
@@ -182,9 +187,6 @@ End Function
 'SHARED PUBLIC SUBS
 Public Sub CopyHeaders(from_sheet_name$, to_sheet_name$)
     Sheets(to_sheet_name).Range("A1:AA1").Value = Sheets(from_sheet_name).Range("A1:AA1").Value
-End Sub
-Private Sub TextToColumns(sheet_name As String, col As String)
-    Sheets(sheet_name).Columns(col & ":" & col).TextToColumns Destination:=Range(col & "1"), DataType:=xlDelimited
 End Sub
 
 'SHARED PRIVATE SUBS
