@@ -133,7 +133,7 @@ End Sub
 Private Sub AddCustomerPartNumbers(not_ordered As Collection)
     Dim x%
     For x = 1 To not_ordered.count
-        If (Sheets.Application.WorksheetFunction.CountIf(Sheets("Serial File").Range("D:D"), not_ordered(x)) = 0) Then
+        If (Sheets.Application.WorksheetFunction.CountIf(Sheets("Review Data").Range("E:E"), not_ordered(x)) = 0) Then
             Sheets("Parts Not Ordered").Range("A" & LastPNOCell()).Value = not_ordered(x)
         End If
     Next x
